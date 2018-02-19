@@ -18,6 +18,7 @@
 
 - [Acerca de este repositorio](#acerca-de-este-repositorio)
 - [Demo](#demo)
+- [Uso](#uso)
 - [TODO](#todo)
 
 ## Acerca de este repositorio
@@ -27,6 +28,10 @@ Este repositorio pretende ser una librería [Reactjs](https://reactjs.org/) de u
 ## Demo
 
 Para visualizar los distintos componentes utilizamos [Storybook](https://storybook.js.org/). El comando para esto es `yarn run storybook` y en el navegador abrir  [http://localhost:6006/](http://localhost:6006/).
+
+## Uso
+
+Para utilizar esta libreria en tu proyecto `npm install cerveza-tools` o `yarn add cerveza-tools`
 
 ## TODO
 
