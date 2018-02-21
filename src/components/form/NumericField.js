@@ -20,9 +20,6 @@ class NumericField extends Component {
 
 		this.state = { value: value, actualFocus: null }
 	}
-	/*if(newValue === 0){
-			newValue = ''
-		}*/
 
 	componentWillReceiveProps(nextProps) {
 		// Don't update if we are editing the field
@@ -47,21 +44,28 @@ class NumericField extends Component {
 	// Cancel non-numeric characters
 	handleKeyDown = e => {
 		const charCode = e.which
-
-		// Check if the number already has a dot
 		const val = e.target.value + ""
+
+		// Check if the number already has a dot, we dont want 2 dots
 		if (val.indexOf(".") >= 0 && charCode === 190) {
 			e.preventDefault()
 			return
 		}
 
 		// Allow some keys like arrows and dot
-		if ([8, 46, 37, 38, 39, 40, 190].indexOf(e.which) + 1) {
+		if ([8, 9, 46, 37, 38, 39, 40, 190].indexOf(e.which) + 1) {
 			return
 		}
 
 		// Block any other characters but numbers
 		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+			e.preventDefault()
+			return
+		} else if (
+			val.length > this.props.maxLength ||
+			(val.length == 4 && val.indexOf(".") >= 0 && !(charCode !== 190)) ||
+			(val.length == 4 && val.indexOf(".") == -1 && charCode !== 190)
+		) {
 			e.preventDefault()
 			return
 		}
@@ -70,18 +74,17 @@ class NumericField extends Component {
 	handleChange = event => {
 		const { handleInputChange } = this.props
 		let newValue = event.target.value
-
-		newValue = typeof newValue === "number" && isNaN(newValue) ? 0 : Number(newValue)
-
 		handleInputChange && handleInputChange(newValue, event.target.name)
 		this.setState({ value: newValue })
 	}
 
 	handleBlur = event => {
 		let newValue = event.target.value
+		// if the value is 0 or 000 ∞ replace with an empty string
 		newValue = newValue.replace(/^0+/, "")
-		newValue = newValue === "" ? 0 : newValue
-		newValue = numberWithCommas(newValue)
+		if (newValue !== "") {
+			newValue = numberWithCommas(newValue)
+		}
 		this.setState({ value: newValue, actualFocus: null })
 	}
 

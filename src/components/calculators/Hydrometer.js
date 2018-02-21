@@ -53,8 +53,9 @@ class Hydrometer extends Component {
 					label="Densidad"
 					name="hydrometer"
 					handleInputChange={this.handleChange}
-					placeholder="ej: 1.040 o 1040"
+					placeholder="ej: 1040"
 					value={hydrometer}
+					maxLength={4}
 				/>
 				<NumericField
 					label="Temperatura (ºC)"
