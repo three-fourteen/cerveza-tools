@@ -21,7 +21,8 @@ class InputField extends Component {
 			handleBlur,
 			handleFocus,
 			handleKeyDown,
-			hideLabel
+			hideLabel,
+			disabled
 		} = this.props
 		const labelClass = hideLabel ? "sr-only " : ""
 		return (
@@ -39,6 +40,7 @@ class InputField extends Component {
 					onBlur={handleBlur}
 					onFocus={handleFocus}
 					onKeyDown={handleKeyDown}
+					disabled={disabled}
 				/>
 			</div>
 		)

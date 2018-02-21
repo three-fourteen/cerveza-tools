@@ -58,13 +58,14 @@ class NumericField extends Component {
 		}
 
 		// Block any other characters but numbers
+		const maxLength = this.props.maxLength
 		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
 			e.preventDefault()
 			return
 		} else if (
-			val.length > this.props.maxLength ||
-			(val.length == 4 && val.indexOf(".") >= 0 && !(charCode !== 190)) ||
-			(val.length == 4 && val.indexOf(".") == -1 && charCode !== 190)
+			val.length > maxLength ||
+			(val.length == maxLength && val.indexOf(".") >= 0 && !(charCode !== 190)) ||
+			(val.length == maxLength && val.indexOf(".") == -1 && charCode !== 190)
 		) {
 			e.preventDefault()
 			return
@@ -95,13 +96,14 @@ class NumericField extends Component {
 	}
 
 	render() {
-		const { name, placeholder, label } = this.props
+		const { name, placeholder, label, disabled } = this.props
 		return (
 			<InputField
 				label={label}
 				name={name}
 				placeholder={placeholder}
 				value={this.state.value}
+				disabled={disabled}
 				handleChange={this.handleChange}
 				handleBlur={this.handleBlur}
 				handleFocus={this.handleFocus}

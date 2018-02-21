@@ -4,7 +4,12 @@
   "description": "cerveza-tools React component",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "files": ["css", "es", "lib", "umd"],
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd"
+  ],
   "scripts": {
     "build": "nwb build-react-component --copy-files --no-demo",
     "clean": "nwb clean-module && nwb clean-demo",
@@ -16,24 +21,27 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@storybook/addon-knobs": "^3.3.14",
     "prop-types": "^15.6.0"
   },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
-    "@storybook/react": "^3.3.13",
-    "nwb": "0.21.x",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
     "@storybook/addon-actions": "^3.3.13",
     "@storybook/addon-links": "^3.3.13",
     "@storybook/addons": "^3.3.13",
-    "babel-core": "^6.26.0"
+    "@storybook/react": "^3.3.13",
+    "babel-core": "^6.26.0",
+    "nwb": "0.21.x",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "author": "Andy Pi",
   "homepage": "",
   "license": "GPL-3.0-or-later",
   "repository": "",
-  "keywords": ["react-component"]
+  "keywords": [
+    "react-component"
+  ]
 }
