@@ -2,7 +2,7 @@ import React, { Component } from "react"
 
 import { NumericField, Button } from "../form"
 
-import { checkVal, parseFloatEx, round } from "../../helpers"
+import { hydrometerCorrection } from "../../calculators"
 
 class Hydrometer extends Component {
 	constructor(props) {
@@ -11,27 +11,10 @@ class Hydrometer extends Component {
 		this.state = { hydrometer: "", temp: "", cTemp: "", cHydrometer: null }
 	}
 
-	CalculateTempCorrection = temp => {
-		return 1 - (temp + 288.9414) / (508929.2 * (temp + 68.12963)) * Math.pow(temp - 3.9863, 2)
-	}
-
-	hydrometerCorrection = () => {
+	calculate = () => {
 		const { hydrometer, temp, cTemp } = this.state
-		if (!checkVal(hydrometer, "Lectura densidad")) return
-		if (!checkVal(temp, "Temperatura")) return
-		if (!checkVal(cTemp, "Temperatura ajuste densimetro")) return
-
-		let hydrometerParsed = parseFloatEx(hydrometer)
-		if (hydrometerParsed.toString().indexOf(".") === -1) hydrometerParsed = hydrometerParsed / 1000
-		let tempParsed = parseFloatEx(temp)
-		let cTempParsed = parseFloatEx(cTemp)
-
-		var value = round(
-			hydrometerParsed +
-				(this.CalculateTempCorrection(cTempParsed) / this.CalculateTempCorrection(tempParsed) - 1),
-			3
-		)
-		this.setState({ cHydrometer: value })
+		const newState = hydrometerCorrection(hydrometer, temp, cTemp)
+		this.setState(newState)
 	}
 
 	handleChange = (val, name) => {
@@ -76,7 +59,7 @@ class Hydrometer extends Component {
 						La densidad corregida es: <strong>{cHydrometer}</strong>
 					</p>
 				)}
-				<Button onClick={this.hydrometerCorrection} label="Calcular" />
+				<Button onClick={this.calculate} label="Calcular" />
 				<Button onClick={this.clearForm} label="Limpiar" />
 			</div>
 		)

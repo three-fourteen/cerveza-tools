@@ -7,7 +7,7 @@ import { withKnobs, text, boolean, number } from "@storybook/addon-knobs/react"
 
 //import { Button, Welcome } from "@storybook/react/demo"
 
-import { NumericField, Button, Hydrometer } from "../src"
+import { NumericField, Button, Hydrometer, Alcohol } from "../src"
 
 //storiesOf("Welcome", module).add("to Storybook", () => <Welcome showApp={linkTo("Button")} />)
 
@@ -15,12 +15,20 @@ import { NumericField, Button, Hydrometer } from "../src"
 	.add("with text", () => <Button onClick={action("clicked")}>Hello Button</Button>)
 	.add("with some emoji", () => <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>)*/
 
-const storiesCalc = storiesOf("Calculadora/Densimetro", module)
-storiesCalc.addDecorator(withKnobs)
-storiesCalc.add("Basico", () => <Hydrometer />).add("Con título y descripción", () => {
+const storiesHydrometer = storiesOf("Densimetro", module)
+storiesHydrometer.addDecorator(withKnobs)
+storiesHydrometer.add("Basico", () => <Hydrometer />).add("Densimetro/Con título y descripción", () => {
 	const title = text("Title", "Correción Densimetro")
 	const intro = text("Intro", "El valor obtenido es una aproximación, pero bastante exacto para nuestros propositos.")
 	return <Hydrometer title={title} intro={intro} />
+})
+
+const storiesAlcohol = storiesOf("Alcohol", module)
+storiesAlcohol.addDecorator(withKnobs)
+storiesAlcohol.add("Basico", () => <Alcohol />).add("Con título y descripción", () => {
+	const title = text("Title", "Contenido en Alcohol / Atenuación")
+	const intro = text("Intro", "Descripción sobre la calculadora")
+	return <Alcohol title={title} intro={intro} />
 })
 
 const storiesForm = storiesOf("Form/Input numerico", module)
