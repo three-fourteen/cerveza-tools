@@ -4,12 +4,7 @@
   "description": "cerveza-tools React component",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "files": [
-    "css",
-    "es",
-    "lib",
-    "umd"
-  ],
+  "files": ["css", "es", "lib", "umd"],
   "scripts": {
     "build": "nwb build-react-component --copy-files --no-demo",
     "clean": "nwb clean-module && nwb clean-demo",
@@ -40,8 +35,12 @@
   "author": "Andy Pi",
   "homepage": "",
   "license": "GPL-3.0-or-later",
-  "repository": "",
-  "keywords": [
-    "react-component"
-  ]
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andres314/cerveza-tools"
+  },
+  "bugs": {
+    "url": "https://github.com/andres314/cerveza-tools/issues"
+  },
+  "keywords": ["react-component", "cerveza", "beer", "calculadoras", "calculators", "javascript", "reactjs"]
 }
