@@ -2,15 +2,13 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { alcoholCalc } from "../../calculators"
 
+const initialState = { DO: "", DF: "", alcoholCalcValue: null }
+
 class Alcohol extends Component {
 	constructor(props) {
 		super(props)
 
-		this.state = { DO: "", DF: "", cHydrometer: null }
-	}
-
-	CalculateTempCorrection = temp => {
-		return 1 - (temp + 288.9414) / (508929.2 * (temp + 68.12963)) * Math.pow(temp - 3.9863, 2)
+		this.state = { ...initialState }
 	}
 
 	calculate = () => {
@@ -24,7 +22,7 @@ class Alcohol extends Component {
 	}
 
 	clearForm = () => {
-		this.setState({ DO: "", DF: "", cHydrometer: "" })
+		this.setState({ ...initialState })
 	}
 
 	render() {

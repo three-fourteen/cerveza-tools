@@ -11,7 +11,7 @@ export function hydrometerCorrection(hydrometer, temp, cTemp) {
 	let tempParsed = parseFloatEx(temp)
 	let cTempParsed = parseFloatEx(cTemp)
 
-	var value = round(
+	const value = round(
 		hydrometerParsed + (CalculateTempCorrection(cTempParsed) / CalculateTempCorrection(tempParsed) - 1),
 		3
 	)
@@ -40,15 +40,32 @@ export function alcoholCalc(DO, DF) {
 			.toString()
 			.replace(".", "")
 
-	var alcohol = (tempDO - tempDF) / 7.45
+	const alcohol = (tempDO - tempDF) / 7.45
 
 	tempDO = parseFloat(tempDO.toString().substring(1))
 	tempDF = parseFloat(tempDF.toString().substring(1))
 
-	var attenuation = (tempDO - tempDF) / tempDO * 100
+	const attenuation = (tempDO - tempDF) / tempDO * 100
 
 	return {
-		alcoholCalcValue: round(alcohol, 2) + " %",
-		attenuationCalcValue: round(attenuation, 2) + " %"
+		alcoholCalcValue: `${round(alcohol, 2)} %`,
+		attenuationCalcValue: `${round(attenuation, 2)} %`
 	}
+}
+
+// Temperatura escalonada
+export function restCalc(weight, thick, curtemp, tartemp) {
+	if (!checkVal(weight, "Peso del grano en Kg")) return;
+	if (!checkVal(thick, "Litros de agua por Kg de grano")) return;
+	if (!checkVal(curtemp, "Temperatura actual")) return;
+	if (!checkVal(tartemp, "Temperatura objetivo")) return;
+				
+	weight = parseFloatEx(weight)
+	thick = parseFloatEx(thick)
+	curtemp = parseFloatEx(curtemp)
+	tartemp = parseFloatEx(tartemp)
+	console.log('restCalc',weight, thick,curtemp,tartemp)		
+	const strikeTemp = (weight *  (.4 + thick)) * (tartemp - curtemp) / (100 - tartemp);
+	
+	return {restCalcValue:  round(strikeTemp, 1)}
 }

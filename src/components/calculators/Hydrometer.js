@@ -1,14 +1,14 @@
 import React, { Component } from "react"
-
 import { NumericField, Button } from "../form"
-
 import { hydrometerCorrection } from "../../calculators"
+
+const initialState = { hydrometer: "", temp: "", cTemp: "", cHydrometer: null }
 
 class Hydrometer extends Component {
 	constructor(props) {
 		super(props)
 
-		this.state = { hydrometer: "", temp: "", cTemp: "", cHydrometer: null }
+		this.state = { ...initialState }
 	}
 
 	calculate = () => {
@@ -22,7 +22,7 @@ class Hydrometer extends Component {
 	}
 
 	clearForm = () => {
-		this.setState({ hydrometer: "", temp: "", cTemp: "", cHydrometer: "" })
+		this.setState({ ...initialState })
 	}
 
 	render() {

@@ -7,7 +7,7 @@ import { withKnobs, text, boolean, number } from "@storybook/addon-knobs/react"
 
 //import { Button, Welcome } from "@storybook/react/demo"
 
-import { NumericField, Button, Hydrometer, Alcohol } from "../src"
+import { NumericField, Button, Hydrometer, Alcohol, StepMashing } from "../src"
 
 //storiesOf("Welcome", module).add("to Storybook", () => <Welcome showApp={linkTo("Button")} />)
 
@@ -29,6 +29,14 @@ storiesAlcohol.add("Basico", () => <Alcohol />).add("Con título y descripción"
 	const title = text("Title", "Contenido en Alcohol / Atenuación")
 	const intro = text("Intro", "Descripción sobre la calculadora")
 	return <Alcohol title={title} intro={intro} />
+})
+
+const storiesStepMashing = storiesOf("StepMashing", module)
+storiesStepMashing.addDecorator(withKnobs)
+storiesStepMashing.add("Basico", () => <StepMashing />).add("Con título y descripción", () => {
+	const title = text("Title", "Temperatura del agua para realizar escalón en el macerado")
+	const intro = text("Intro", "Descripción sobre la calculadora")
+	return <StepMashing title={title} intro={intro} />
 })
 
 const storiesForm = storiesOf("Form/Input numerico", module)
