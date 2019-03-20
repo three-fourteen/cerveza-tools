@@ -63,9 +63,36 @@ export function restCalc(weight, thick, curtemp, tartemp) {
 	weight = parseFloatEx(weight)
 	thick = parseFloatEx(thick)
 	curtemp = parseFloatEx(curtemp)
-	tartemp = parseFloatEx(tartemp)
-	console.log('restCalc',weight, thick,curtemp,tartemp)		
+	tartemp = parseFloatEx(tartemp)	
 	const strikeTemp = (weight *  (.4 + thick)) * (tartemp - curtemp) / (100 - tartemp);
 	
 	return {restCalcValue:  round(strikeTemp, 1)}
+}
+
+// Temperatura macerado
+export function strikeCalc(thick, strtemp, grntemp) {
+	if (!checkVal(thick, "Litros de agua por Kg de grano")) return;
+	if (!checkVal(strtemp, "Temperatura objetivo del macerado")) return;
+	if (!checkVal(grntemp, "Temperatura del grano")) return;
+			
+	thick = parseFloatEx(thick)
+	strtemp = parseFloatEx(strtemp)
+	grntemp = parseFloatEx(grntemp)
+				
+	const strikeTemp = strtemp + .4 * (strtemp - grntemp) / thick + 1.7
+				
+	return {strikeCalcValue: round(strikeTemp, 1)};
+}
+
+// Temperatura macerado
+export function mashVolCalc(weight, thick) {
+	if (!checkVal(weight, "Peso del grano en Kg")) return;
+	if (!checkVal(thick, "Litros de agua por Kg de grano")) return;
+			
+	weight = parseFloatEx(weight)		
+	thick = parseFloatEx(thick)
+	
+	const vol = weight * (.67 + thick)
+				
+	return {mashVolCalcValue: round(vol, 2)};
 }

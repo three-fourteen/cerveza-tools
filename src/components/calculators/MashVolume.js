@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import { NumericField, Button } from "../form"
-import { restCalc } from "../../calculators"
+import { mashVolCalc } from "../../calculators"
 
-const initialState = { curtemp: "", tartemp: "", thick: "",  weight: "", restCalcValue: null }
+const initialState = { thick: "",  weight: "", mashVolCalcValue: null }
 
-class StepMashing extends Component {
+class MashVolume extends Component {
 	constructor(props) {
 		super(props)
 
@@ -12,8 +12,8 @@ class StepMashing extends Component {
 	}
 
 	calculate = () => {
-		const { curtemp, tartemp, thick, weight } = this.state
-		const newState = restCalc(weight, thick, curtemp, tartemp)
+		const { thick, weight } = this.state
+		const newState = mashVolCalc(weight, thick)
 		this.setState(newState)
 	}
 
@@ -26,7 +26,7 @@ class StepMashing extends Component {
 	}
 
 	render() {
-		const { curtemp, tartemp, thick, weight, restCalcValue } = this.state
+		const { thick, weight, mashVolCalcValue } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -48,25 +48,9 @@ class StepMashing extends Component {
 					value={thick}
 					maxLength={4}
 				/>
-				<NumericField
-					label="Temperatura actual (ºC)"
-					name="curtemp"
-					handleInputChange={this.handleChange}
-					placeholder="ej: 50"
-					value={curtemp}
-					maxLength={4}
-				/>
-				<NumericField
-					label="Temperatura objetivo (ºC)"
-					name="tartemp"
-					handleInputChange={this.handleChange}
-					placeholder="ej: 60"
-					value={tartemp}
-					maxLength={4}
-				/> 
-				{restCalcValue && (
+				{mashVolCalcValue && (
 					<p>
-						Litros de agua hirviendo (100ºC) que se deben añadir: <strong>{restCalcValue}</strong>
+						El macerado ocupara un volumen de: <strong>{mashVolCalcValue}</strong> L
 					</p>
 				)}
 				<Button onClick={this.calculate} label="Calcular" />
@@ -76,4 +60,4 @@ class StepMashing extends Component {
 	}
 }
 
-export default StepMashing
+export default MashVolume

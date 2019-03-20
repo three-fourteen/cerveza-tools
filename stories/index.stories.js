@@ -7,7 +7,7 @@ import { withKnobs, text, boolean, number } from "@storybook/addon-knobs/react"
 
 //import { Button, Welcome } from "@storybook/react/demo"
 
-import { NumericField, Button, Hydrometer, Alcohol, StepMashing } from "../src"
+import { NumericField, Button, Hydrometer, Alcohol, StepMashing, MashTemperature, MashVolume } from "../src"
 
 //storiesOf("Welcome", module).add("to Storybook", () => <Welcome showApp={linkTo("Button")} />)
 
@@ -31,12 +31,29 @@ storiesAlcohol.add("Basico", () => <Alcohol />).add("Con título y descripción"
 	return <Alcohol title={title} intro={intro} />
 })
 
-const storiesStepMashing = storiesOf("StepMashing", module)
+const storiesStepMashing = storiesOf("Temperatura Escalonada", module)
 storiesStepMashing.addDecorator(withKnobs)
 storiesStepMashing.add("Basico", () => <StepMashing />).add("Con título y descripción", () => {
 	const title = text("Title", "Temperatura del agua para realizar escalón en el macerado")
 	const intro = text("Intro", "Descripción sobre la calculadora")
 	return <StepMashing title={title} intro={intro} />
+})
+
+
+const storiesMashTemperature = storiesOf("Temperatura Macerado", module)
+storiesMashTemperature.addDecorator(withKnobs)
+storiesMashTemperature.add("Basico", () => <MashTemperature />).add("Con título y descripción", () => {
+	const title = text("Title", "Temperatura del agua para el macerado")
+	const intro = text("Intro", "Descripción sobre la calculadora")
+	return <MashTemperature title={title} intro={intro} />
+})
+
+const storiesMashVolume = storiesOf("Volumen Macerado", module)
+storiesMashVolume.addDecorator(withKnobs)
+storiesMashVolume.add("Basico", () => <MashVolume />).add("Con título y descripción", () => {
+	const title = text("Title", "Volumen Macerado")
+	const intro = text("Intro", "Comprueba si tu macerador tiene tamaño suficiente para realizar el macerado. No se tiene en cuenta el espacio que pueda haber bajo tu falso fondo, si lo tienes.")
+	return <MashVolume title={title} intro={intro} />
 })
 
 const storiesForm = storiesOf("Form/Input numerico", module)

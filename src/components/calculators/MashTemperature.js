@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import { NumericField, Button } from "../form"
-import { restCalc } from "../../calculators"
+import { strikeCalc } from "../../calculators"
 
-const initialState = { curtemp: "", tartemp: "", thick: "",  weight: "", restCalcValue: null }
+const initialState = { thick: "",  strtemp: "",  grntemp: "", strikeCalcValue: null }
 
-class StepMashing extends Component {
+class MashTemperature extends Component {
 	constructor(props) {
 		super(props)
 
@@ -12,8 +12,8 @@ class StepMashing extends Component {
 	}
 
 	calculate = () => {
-		const { curtemp, tartemp, thick, weight } = this.state
-		const newState = restCalc(weight, thick, curtemp, tartemp)
+		const { thick, strtemp, grntemp } = this.state
+		const newState = strikeCalc(thick, strtemp, grntemp)
 		this.setState(newState)
 	}
 
@@ -26,20 +26,12 @@ class StepMashing extends Component {
 	}
 
 	render() {
-		const { curtemp, tartemp, thick, weight, restCalcValue } = this.state
+		const { thick, strtemp, grntemp, strikeCalcValue } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
 				{title && <h3>{title}</h3>}
 				{intro && <p>{intro}</p>}
-				<NumericField
-					label="Peso del grano en Kg"
-					name="weight"
-					handleInputChange={this.handleChange}
-					placeholder="ej: 5"
-					value={weight}
-					maxLength={4}
-				/>
 				<NumericField
 					label="Litros de agua por Kg de grano"
 					name="thick"
@@ -49,24 +41,24 @@ class StepMashing extends Component {
 					maxLength={4}
 				/>
 				<NumericField
-					label="Temperatura actual (ºC)"
-					name="curtemp"
+					label="Temperatura objetivo del macerado"
+					name="strtemp"
 					handleInputChange={this.handleChange}
-					placeholder="ej: 50"
-					value={curtemp}
+					placeholder="ej: 67"
+					value={strtemp}
 					maxLength={4}
 				/>
 				<NumericField
-					label="Temperatura objetivo (ºC)"
-					name="tartemp"
+					label="Temperatura del grano"
+					name="grntemp"
 					handleInputChange={this.handleChange}
-					placeholder="ej: 60"
-					value={tartemp}
+					placeholder="ej: 18"
+					value={grntemp}
 					maxLength={4}
 				/> 
-				{restCalcValue && (
+				{strikeCalcValue && (
 					<p>
-						Litros de agua hirviendo (100ºC) que se deben añadir: <strong>{restCalcValue}</strong>
+						La temperatura del agua tiene que ser de: <strong>{strikeCalcValue}</strong>ºC
 					</p>
 				)}
 				<Button onClick={this.calculate} label="Calcular" />
@@ -76,4 +68,4 @@ class StepMashing extends Component {
 	}
 }
 
-export default StepMashing
+export default MashTemperature
