@@ -1,6 +1,6 @@
 {
   "name": "cerveza-tools",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "cerveza-tools React component",
   "main": "lib/index.js",
   "module": "es/index.js",
