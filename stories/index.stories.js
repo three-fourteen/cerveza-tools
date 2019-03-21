@@ -7,7 +7,16 @@ import { withKnobs, text, boolean, number } from "@storybook/addon-knobs/react"
 
 //import { Button, Welcome } from "@storybook/react/demo"
 
-import { NumericField, Button, Hydrometer, Alcohol, StepMashing, MashTemperature, MashVolume } from "../src"
+import { 
+	NumericField, 
+	Button, 
+	Hydrometer, 
+	Alcohol, 
+	StepMashing, 
+	MashTemperature, 
+	MashVolume, 
+	WaterDilution 
+	} from "../src"
 
 //storiesOf("Welcome", module).add("to Storybook", () => <Welcome showApp={linkTo("Button")} />)
 
@@ -54,6 +63,14 @@ storiesMashVolume.add("Basico", () => <MashVolume />).add("Con título y descrip
 	const title = text("Title", "Volumen Macerado")
 	const intro = text("Intro", "Comprueba si tu macerador tiene tamaño suficiente para realizar el macerado. No se tiene en cuenta el espacio que pueda haber bajo tu falso fondo, si lo tienes.")
 	return <MashVolume title={title} intro={intro} />
+})
+
+const storiesWaterDilution = storiesOf("Dilución de mosto con agua", module)
+storiesWaterDilution.addDecorator(withKnobs)
+storiesWaterDilution.add("Basico", () => <WaterDilution />).add("Con título y descripción", () => {
+	const title = text("Title", "Cantidad de agua para diluir un mosto")
+	const intro = text("Intro", "Comprueba si tu macerador tiene tamaño suficiente para realizar el macerado. No se tiene en cuenta el espacio que pueda haber bajo tu falso fondo, si lo tienes.")
+	return <WaterDilution title={title} intro={intro} />
 })
 
 const storiesForm = storiesOf("Form/Input numerico", module)

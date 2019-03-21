@@ -96,3 +96,35 @@ export function mashVolCalc(weight, thick) {
 				
 	return {mashVolCalcValue: round(vol, 2)};
 }
+
+
+export function dilutionCalc(DO, DF, volume) {		
+	if (!checkVal(DO, "Densidad actual")) return;
+	if (!checkVal(DF, "Densidad objetivo")) return;
+	if (!checkVal(volume, "Volumen en litros")) return;	
+				
+	DO = parseFloatEx(DO);
+	DF = parseFloatEx(DF);
+	volume = parseFloatEx(volume);
+	
+	// TODO: move this cleanup to an external function
+	let tempDO = DO
+	let tempDF = DF
+	if (tempDO.toString().indexOf(".") != -1)
+		tempDO = tempDO
+			.toFixed(3)
+			.toString()
+			.replace(".", "")
+	if (tempDF.toString().indexOf(".") != -1)
+		tempDF = tempDF
+			.toFixed(3)
+			.toString()
+			.replace(".", "")
+						
+	tempDO = parseFloat(tempDO) - 1000;
+	tempDF = parseFloat(tempDF) - 1000;
+
+	const water = ((tempDO * volume) / tempDF) - volume;
+				
+	return {dilutionCalcValue: parseFloat(water).toFixed(3)};
+}	
