@@ -15,7 +15,8 @@ import {
 	StepMashing, 
 	MashTemperature, 
 	MashVolume, 
-	WaterDilution 
+	WaterDilution,
+	Evaporation
 	} from "../src"
 
 //storiesOf("Welcome", module).add("to Storybook", () => <Welcome showApp={linkTo("Button")} />)
@@ -24,6 +25,9 @@ import {
 	.add("with text", () => <Button onClick={action("clicked")}>Hello Button</Button>)
 	.add("with some emoji", () => <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>)*/
 
+/**
+ * Calculators
+ */
 const storiesHydrometer = storiesOf("Densimetro", module)
 storiesHydrometer.addDecorator(withKnobs)
 storiesHydrometer.add("Basico", () => <Hydrometer />).add("Densimetro/Con título y descripción", () => {
@@ -73,6 +77,18 @@ storiesWaterDilution.add("Basico", () => <WaterDilution />).add("Con título y d
 	return <WaterDilution title={title} intro={intro} />
 })
 
+const storiesEvaporation = storiesOf("Evaporacion", module)
+storiesEvaporation.addDecorator(withKnobs)
+storiesEvaporation.add("Basico", () => <Evaporation />).add("Con título y descripción", () => {
+	const title = text("Title", "Calcular evaporación")
+	const intro = text("Intro", "El dato del volumén después de hervir no tiene en cuenta perdidas que se puedan producir en tubos, sistemas de enfriado o del mosto que se pueda quedar en la olla. Si se obtiene un volumén inferior al mostrado en el cálculo deberemos tener en cuenta esto.")
+	return <Evaporation title={title} intro={intro} />
+})
+
+
+/**
+ * Form elements
+ */
 const storiesForm = storiesOf("Form/Input numerico", module)
 storiesForm.addDecorator(withKnobs)
 storiesForm
