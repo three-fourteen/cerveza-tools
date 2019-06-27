@@ -16,7 +16,8 @@ import {
 	MashTemperature, 
 	MashVolume, 
 	WaterDilution,
-	Evaporation
+	Evaporation,
+	InitialDensity
 	} from "../src"
 
 //storiesOf("Welcome", module).add("to Storybook", () => <Welcome showApp={linkTo("Button")} />)
@@ -40,7 +41,7 @@ const storiesAlcohol = storiesOf("Alcohol", module)
 storiesAlcohol.addDecorator(withKnobs)
 storiesAlcohol.add("Basico", () => <Alcohol />).add("Con título y descripción", () => {
 	const title = text("Title", "Contenido en Alcohol / Atenuación")
-	const intro = text("Intro", "Descripción sobre la calculadora")
+	const intro = text("Intro", "Descripción sobre la calculadora.")
 	return <Alcohol title={title} intro={intro} />
 })
 
@@ -48,7 +49,7 @@ const storiesStepMashing = storiesOf("Temperatura Escalonada", module)
 storiesStepMashing.addDecorator(withKnobs)
 storiesStepMashing.add("Basico", () => <StepMashing />).add("Con título y descripción", () => {
 	const title = text("Title", "Temperatura del agua para realizar escalón en el macerado")
-	const intro = text("Intro", "Descripción sobre la calculadora")
+	const intro = text("Intro", "Descripción sobre la calculadora.")
 	return <StepMashing title={title} intro={intro} />
 })
 
@@ -57,7 +58,7 @@ const storiesMashTemperature = storiesOf("Temperatura Macerado", module)
 storiesMashTemperature.addDecorator(withKnobs)
 storiesMashTemperature.add("Basico", () => <MashTemperature />).add("Con título y descripción", () => {
 	const title = text("Title", "Temperatura del agua para el macerado")
-	const intro = text("Intro", "Descripción sobre la calculadora")
+	const intro = text("Intro", "Descripción sobre la calculadora.")
 	return <MashTemperature title={title} intro={intro} />
 })
 
@@ -65,7 +66,7 @@ const storiesMashVolume = storiesOf("Volumen Macerado", module)
 storiesMashVolume.addDecorator(withKnobs)
 storiesMashVolume.add("Basico", () => <MashVolume />).add("Con título y descripción", () => {
 	const title = text("Title", "Volumen Macerado")
-	const intro = text("Intro", "Comprueba si tu macerador tiene tamaño suficiente para realizar el macerado. No se tiene en cuenta el espacio que pueda haber bajo tu falso fondo, si lo tienes.")
+	const intro = text("Intro", "Descripción sobre la calculadora.")
 	return <MashVolume title={title} intro={intro} />
 })
 
@@ -83,6 +84,14 @@ storiesEvaporation.add("Basico", () => <Evaporation />).add("Con título y descr
 	const title = text("Title", "Calcular evaporación")
 	const intro = text("Intro", "El dato del volumén después de hervir no tiene en cuenta perdidas que se puedan producir en tubos, sistemas de enfriado o del mosto que se pueda quedar en la olla. Si se obtiene un volumén inferior al mostrado en el cálculo deberemos tener en cuenta esto.")
 	return <Evaporation title={title} intro={intro} />
+})
+
+const storiesInitialDensity = storiesOf("Densidad Inicial", module)
+storiesInitialDensity.addDecorator(withKnobs)
+storiesInitialDensity.add("Basico", () => <InitialDensity />).add("Con título y descripción", () => {
+	const title = text("Title", "Calcular volumen y densidad antes de hervir")
+	const intro = text("Intro", "Descripción sobre la calculadora.")
+	return <InitialDensity title={title} intro={intro} />
 })
 
 

@@ -161,3 +161,26 @@ export function evaporationCalc(densityBefore, volume, timeValue, densityAfter) 
 
   return { evaporationResult: round(lostHour, 2), volumeEevaporationResult: round(endVolume, 1) };
 }
+
+
+export function initialCalc(evaporation, volume, timeValue, densityAfter) {
+	if (!checkVal(densityAfter, "Densidad después de hervir")) return;
+	if (!checkVal(volume, "Volumen después de hervir")) return;
+	if (!checkVal(timeValue, "Tiempo hervido")) return;
+	if (!checkVal(evaporation, "Perdida de volumen en l/h")) return;
+
+	densityAfter = parseFloatEx(densityAfter);
+	volume = parseFloatEx(volume);
+	timeValue = parseFloatEx(timeValue);
+	evaporation = parseFloatEx(evaporation);
+
+	if (densityAfter.toString().indexOf(".") != -1) {
+		densityAfter = densityAfter.toFixed(3).toString().replace(".","")
+	}
+	densityAfter = parseFloat(densityAfter) - 1000;
+
+	const initialVolume = volume + ((evaporation * timeValue) / 60);
+	const initialDensity = (volume * densityAfter) / initialVolume;
+	
+	return {densityResult: parseFloat(1000 + initialDensity).toFixed(0), volumeResult: round(initialVolume, 2)}
+}
