@@ -6,16 +6,11 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "strict": true,
-    "declaration": true,
-    "declarationDir": "dist",
-    "emitDeclarationOnly": true,
-    "outDir": "dist",
-    "rootDir": "src",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
-  "include": ["src"],
+  "include": ["src", "demo"],
   "exclude": ["node_modules", "dist", "tests", "stories"]
 }

@@ -1,0 +1,238 @@
+/* ── Reset & base ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: #f5f0e8;
+  color: #2d2417;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Layout ───────────────────────────────────────────────── */
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ── Home header ──────────────────────────────────────────── */
+.home-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.home-header h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #7b3f00;
+}
+
+.home-header p {
+  margin-top: 0.4rem;
+  font-size: 1.05rem;
+  color: #6b5a3e;
+}
+
+/* ── Calculator grid ──────────────────────────────────────── */
+.calculator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.1rem;
+}
+
+/* ── Calculator card ──────────────────────────────────────── */
+.calculator-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.4rem 1.2rem;
+  background: #fff;
+  border: 2px solid #e8dbc8;
+  border-radius: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  cursor: pointer;
+}
+
+.calculator-card:hover {
+  border-color: #c07830;
+  box-shadow: 0 4px 16px rgba(192, 120, 48, 0.15);
+  transform: translateY(-2px);
+}
+
+.calculator-card__emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.calculator-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #7b3f00;
+}
+
+.calculator-card__description {
+  font-size: 0.85rem;
+  color: #6b5a3e;
+  line-height: 1.45;
+}
+
+/* ── Breadcrumb nav ───────────────────────────────────────── */
+.breadcrumb {
+  margin-bottom: 1.75rem;
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #c07830;
+  padding: 0.35rem 0.75rem;
+  border: 1.5px solid #e8dbc8;
+  border-radius: 8px;
+  background: #fff;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.breadcrumb a:hover {
+  background: #fdf6ec;
+  border-color: #c07830;
+}
+
+/* ── Calculator wrapper ───────────────────────────────────── */
+.calculator-wrapper {
+  background: #fff;
+  border: 2px solid #e8dbc8;
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+  max-width: 480px;
+}
+
+.calculator-wrapper h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #7b3f00;
+  margin-bottom: 0.5rem;
+}
+
+.calculator-wrapper p {
+  font-size: 0.9rem;
+  color: #6b5a3e;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+/* ── Form elements (from library) ─────────────────────────── */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a3520;
+  margin-bottom: 0.3rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font-size: 1rem;
+  border: 1.5px solid #d4c4a8;
+  border-radius: 8px;
+  background: #fdf9f4;
+  color: #2d2417;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+
+.input-field:focus {
+  border-color: #c07830;
+  box-shadow: 0 0 0 3px rgba(192, 120, 48, 0.12);
+  background: #fff;
+}
+
+.input-field:disabled {
+  background: #f0ebe2;
+  color: #9a8872;
+  cursor: not-allowed;
+}
+
+/* ── Buttons (from library) ───────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.3rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.6rem;
+  margin-top: 0.75rem;
+  transition: background 0.14s, opacity 0.14s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: #c07830;
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #a8641e;
+}
+
+.btn-secondary {
+  background: #e8dbc8;
+  color: #4a3520;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #d4c4a8;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Result paragraph ─────────────────────────────────────── */
+.calculator-wrapper > div > p:last-of-type:not([style]) {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fdf6ec;
+  border-left: 3px solid #c07830;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .calculator-wrapper {
+    padding: 1.25rem 1rem;
+  }
+
+  .home-header h1 {
+    font-size: 1.8rem;
+  }
+}

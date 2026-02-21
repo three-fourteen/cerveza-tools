@@ -9,9 +9,6 @@
 # production
 /build
 
-# Demo
-/demo
-
 # NPM
 /es
 /lib
