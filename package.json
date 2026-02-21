@@ -1,41 +1,50 @@
 {
   "name": "cerveza-tools",
-  "version": "1.0.17",
+  "version": "2.0.0",
   "description": "cerveza-tools React component",
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "main": "dist/cerveza-tools.umd.js",
+  "module": "dist/cerveza-tools.es.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "css",
-    "es",
-    "lib",
-    "umd"
+    "dist"
   ],
   "scripts": {
-    "build": "nwb build-react-component --copy-files --no-demo",
-    "clean": "nwb clean-module && nwb clean-demo",
-    "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server",
-    "storybook": "start-storybook -p 8080",
-    "build-storybook": "build-storybook"
+    "build": "tsc --emitDeclarationOnly && vite build",
+    "clean": "rm -rf dist",
+    "dev": "vite",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "storybook": "storybook dev -p 8080",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.8.1"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^3.3.13",
-    "@storybook/addon-knobs": "^3.3.14",
-    "@storybook/addon-links": "^3.3.13",
-    "@storybook/addons": "^3.3.13",
-    "@storybook/react": "^3.3.13",
-    "babel-core": "^6.26.0",
-    "nwb": "0.21.x",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "@storybook/addon-actions": "^8.0.0",
+    "@storybook/addon-essentials": "^8.0.0",
+    "@storybook/addon-knobs": "^6.4.0",
+    "@storybook/react": "^8.0.0",
+    "@storybook/react-vite": "^8.0.0",
+    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "jsdom": "^24.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "storybook": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.3.0",
+    "vite-plugin-dts": "^3.9.0",
+    "vitest": "^1.6.0"
   },
   "author": "Andy Pi",
   "homepage": "",
@@ -53,7 +62,7 @@
     "beer",
     "calculadoras",
     "calculators",
-    "javascript",
+    "typescript",
     "reactjs"
   ]
 }
