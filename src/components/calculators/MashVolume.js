@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { mashVolCalc } from "../../calculators"
 
-const initialState = { thick: "",  weight: "", mashVolCalcValue: null }
+const initialState = { thick: "", weight: "", mashVolCalcValue: null, error: null }
 
 class MashVolume extends Component {
 	constructor(props) {
@@ -13,8 +13,12 @@ class MashVolume extends Component {
 
 	calculate = () => {
 		const { thick, weight } = this.state
-		const newState = mashVolCalc(weight, thick)
-		this.setState(newState)
+		try {
+			const newState = mashVolCalc(weight, thick)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -22,11 +26,11 @@ class MashVolume extends Component {
 	}
 
 	clearForm = () => {
-		this.setState({...initialState})
+		this.setState({ ...initialState })
 	}
 
 	render() {
-		const { thick, weight, mashVolCalcValue } = this.state
+		const { thick, weight, mashVolCalcValue, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -48,6 +52,7 @@ class MashVolume extends Component {
 					value={thick}
 					maxLength={4}
 				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{mashVolCalcValue && (
 					<p>
 						El macerado ocupara un volumen de: <strong>{mashVolCalcValue}</strong> L

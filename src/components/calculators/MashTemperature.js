@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { strikeCalc } from "../../calculators"
 
-const initialState = { thick: "",  strtemp: "",  grntemp: "", strikeCalcValue: null }
+const initialState = { thick: "", strtemp: "", grntemp: "", strikeCalcValue: null, error: null }
 
 class MashTemperature extends Component {
 	constructor(props) {
@@ -13,8 +13,12 @@ class MashTemperature extends Component {
 
 	calculate = () => {
 		const { thick, strtemp, grntemp } = this.state
-		const newState = strikeCalc(thick, strtemp, grntemp)
-		this.setState(newState)
+		try {
+			const newState = strikeCalc(thick, strtemp, grntemp)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -22,11 +26,11 @@ class MashTemperature extends Component {
 	}
 
 	clearForm = () => {
-		this.setState({...initialState})
+		this.setState({ ...initialState })
 	}
 
 	render() {
-		const { thick, strtemp, grntemp, strikeCalcValue } = this.state
+		const { thick, strtemp, grntemp, strikeCalcValue, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -55,7 +59,8 @@ class MashTemperature extends Component {
 					placeholder="ej: 18"
 					value={grntemp}
 					maxLength={4}
-				/> 
+				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{strikeCalcValue && (
 					<p>
 						La temperatura del agua tiene que ser de: <strong>{strikeCalcValue}</strong>ºC

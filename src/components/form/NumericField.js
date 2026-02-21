@@ -21,24 +21,23 @@ class NumericField extends Component {
 		this.state = { value: value, actualFocus: null }
 	}
 
-	componentWillReceiveProps(nextProps) {
+	static getDerivedStateFromProps(nextProps, prevState) {
 		// Don't update if we are editing the field
-		if (this.state.actualFocus === nextProps.name) {
-			return
+		if (prevState.actualFocus === nextProps.name) {
+			return null
 		}
-		if (this.props.value !== nextProps.value) {
+		// Only update if value prop has changed and field is not empty
+		if (nextProps.value === "") {
+			return { value: "" }
+		}
+		if (nextProps.value !== undefined) {
 			let value = nextProps.value
-			// Check if we are cleaning the form
-			if (value !== "") {
-				if (typeof value === "number") {
-					value = parseFloat(value.toFixed(2))
-				}
-				// transform number
-				value = numberWithCommas(value)
+			if (typeof value === "number") {
+				value = parseFloat(value.toFixed(2))
 			}
-
-			this.setState({ value: value })
+			return { value: numberWithCommas(value) }
 		}
+		return null
 	}
 
 	// Cancel non-numeric characters
@@ -57,15 +56,17 @@ class NumericField extends Component {
 			return
 		}
 
-		// Block any other characters but numbers
+		// Block any other characters but numbers (main keyboard 0-9 and numpad 0-9)
 		const maxLength = this.props.maxLength
-		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		const isMainDigit = charCode >= 48 && charCode <= 57
+		const isNumpadDigit = charCode >= 96 && charCode <= 105
+		if (charCode > 31 && !isMainDigit && !isNumpadDigit) {
 			e.preventDefault()
 			return
 		} else if (
 			val.length > maxLength ||
-			(val.length == maxLength && val.indexOf(".") >= 0 && !(charCode !== 190)) ||
-			(val.length == maxLength && val.indexOf(".") == -1 && charCode !== 190)
+			(val.length === maxLength && val.indexOf(".") >= 0 && !(charCode !== 190)) ||
+			(val.length === maxLength && val.indexOf(".") === -1 && charCode !== 190)
 		) {
 			e.preventDefault()
 			return

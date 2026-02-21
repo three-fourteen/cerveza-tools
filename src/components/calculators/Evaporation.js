@@ -2,13 +2,14 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { evaporationCalc } from "../../calculators"
 
-const initialState = { 
-    densityBefore: "", 
-    volume: "", 
-    timeValue: "", 
-    densityAfter: "", 
-    evaporationResult: null, 
-    volumeEevaporationResult: null 
+const initialState = {
+	densityBefore: "",
+	volume: "",
+	timeValue: "",
+	densityAfter: "",
+	evaporationResult: null,
+	volumeEvaporationResult: null,
+	error: null
 }
 
 class Evaporation extends Component {
@@ -20,8 +21,12 @@ class Evaporation extends Component {
 
 	calculate = () => {
 		const { densityBefore, volume, timeValue, densityAfter } = this.state
-		const newState = evaporationCalc(densityBefore, volume, timeValue, densityAfter)
-		this.setState(newState)
+		try {
+			const newState = evaporationCalc(densityBefore, volume, timeValue, densityAfter)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -33,7 +38,7 @@ class Evaporation extends Component {
 	}
 
 	render() {
-		const { densityBefore, volume, timeValue, densityAfter, evaporationResult, volumeEevaporationResult } = this.state
+		const { densityBefore, volume, timeValue, densityAfter, evaporationResult, volumeEvaporationResult, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -69,14 +74,15 @@ class Evaporation extends Component {
 					value={densityAfter}
 					maxLength={4}
 				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{evaporationResult && (
 					<p>
 						La perdida por evaporación es: <strong>{evaporationResult}</strong>L/h
 					</p>
 				)}
-				{volumeEevaporationResult && (
+				{volumeEvaporationResult && (
 					<p>
-						El volumen después de hervir es: <strong>{volumeEevaporationResult}</strong>L
+						El volumen después de hervir es: <strong>{volumeEvaporationResult}</strong>L
 					</p>
 				)}
 				<Button onClick={this.calculate} label="Calcular" />

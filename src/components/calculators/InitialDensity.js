@@ -2,13 +2,14 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { initialCalc } from "../../calculators"
 
-const initialState = { 
-    volume: "", 
-    timeValue: "", 
-    densityAfter: "", 
-    evaporation: "", 
-    densityResult: null, 
-    volumeResult: null 
+const initialState = {
+	volume: "",
+	timeValue: "",
+	densityAfter: "",
+	evaporation: "",
+	densityResult: null,
+	volumeResult: null,
+	error: null
 }
 
 class InitialDensity extends Component {
@@ -20,8 +21,12 @@ class InitialDensity extends Component {
 
 	calculate = () => {
 		const { evaporation, volume, timeValue, densityAfter } = this.state
-		const newState = initialCalc(evaporation, volume, timeValue, densityAfter)
-		this.setState(newState)
+		try {
+			const newState = initialCalc(evaporation, volume, timeValue, densityAfter)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -33,7 +38,7 @@ class InitialDensity extends Component {
 	}
 
 	render() {
-		const { volume, timeValue, densityAfter, evaporation, densityResult, volumeResult } = this.state
+		const { volume, timeValue, densityAfter, evaporation, densityResult, volumeResult, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -68,6 +73,7 @@ class InitialDensity extends Component {
 					placeholder="Ej: 6"
 					value={evaporation}
 				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{densityResult && (
 					<p>
 						La densidad antes de hervir deberá de ser de: <strong>{densityResult}</strong>

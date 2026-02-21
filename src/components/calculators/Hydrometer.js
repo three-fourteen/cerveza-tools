@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { hydrometerCorrection } from "../../calculators"
 
-const initialState = { hydrometer: "", temp: "", cTemp: "", cHydrometer: null }
+const initialState = { hydrometer: "", temp: "", cTemp: "", cHydrometer: null, error: null }
 
 class Hydrometer extends Component {
 	constructor(props) {
@@ -13,8 +13,12 @@ class Hydrometer extends Component {
 
 	calculate = () => {
 		const { hydrometer, temp, cTemp } = this.state
-		const newState = hydrometerCorrection(hydrometer, temp, cTemp)
-		this.setState(newState)
+		try {
+			const newState = hydrometerCorrection(hydrometer, temp, cTemp)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -26,7 +30,7 @@ class Hydrometer extends Component {
 	}
 
 	render() {
-		const { hydrometer, temp, cTemp, cHydrometer } = this.state
+		const { hydrometer, temp, cTemp, cHydrometer, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -54,6 +58,7 @@ class Hydrometer extends Component {
 					placeholder="Ej: 20"
 					value={cTemp}
 				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{cHydrometer && (
 					<p>
 						La densidad corregida es: <strong>{cHydrometer}</strong>

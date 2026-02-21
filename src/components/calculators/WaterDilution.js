@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { dilutionCalc } from "../../calculators"
 
-const initialState = { DO: "", DF: "", volume: "", dilutionCalcValue: null }
+const initialState = { DO: "", DF: "", volume: "", dilutionCalcValue: null, error: null }
 
 class WaterDilution extends Component {
 	constructor(props) {
@@ -13,8 +13,12 @@ class WaterDilution extends Component {
 
 	calculate = () => {
 		const { DO, DF, volume } = this.state
-		const newState = dilutionCalc(DO, DF, volume)
-		this.setState(newState)
+		try {
+			const newState = dilutionCalc(DO, DF, volume)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -22,11 +26,11 @@ class WaterDilution extends Component {
 	}
 
 	clearForm = () => {
-		this.setState({...initialState})
+		this.setState({ ...initialState })
 	}
 
 	render() {
-		const { DO, DF, volume, dilutionCalcValue } = this.state
+		const { DO, DF, volume, dilutionCalcValue, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -56,6 +60,7 @@ class WaterDilution extends Component {
 					value={DF}
 					maxLength={4}
 				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{dilutionCalcValue && (
 					<p>
 						Añadir agua: <strong>{dilutionCalcValue}</strong>

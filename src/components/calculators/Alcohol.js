@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { alcoholCalc } from "../../calculators"
 
-const initialState = { DO: "", DF: "", alcoholCalcValue: null }
+const initialState = { DO: "", DF: "", alcoholCalcValue: null, error: null }
 
 class Alcohol extends Component {
 	constructor(props) {
@@ -13,8 +13,12 @@ class Alcohol extends Component {
 
 	calculate = () => {
 		const { DO, DF } = this.state
-		const newState = alcoholCalc(DO, DF)
-		this.setState(newState)
+		try {
+			const newState = alcoholCalc(DO, DF)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -26,7 +30,7 @@ class Alcohol extends Component {
 	}
 
 	render() {
-		const { DO, DF, alcoholCalcValue, attenuationCalcValue } = this.state
+		const { DO, DF, alcoholCalcValue, attenuationCalcValue, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -48,6 +52,7 @@ class Alcohol extends Component {
 					value={DF}
 					maxLength={4}
 				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{alcoholCalcValue && (
 					<p>
 						Volumen de alcohol: <strong>{alcoholCalcValue}</strong>

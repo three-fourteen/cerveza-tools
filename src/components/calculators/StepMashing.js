@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { NumericField, Button } from "../form"
 import { restCalc } from "../../calculators"
 
-const initialState = { curtemp: "", tartemp: "", thick: "",  weight: "", restCalcValue: null }
+const initialState = { curtemp: "", tartemp: "", thick: "", weight: "", restCalcValue: null, error: null }
 
 class StepMashing extends Component {
 	constructor(props) {
@@ -13,8 +13,12 @@ class StepMashing extends Component {
 
 	calculate = () => {
 		const { curtemp, tartemp, thick, weight } = this.state
-		const newState = restCalc(weight, thick, curtemp, tartemp)
-		this.setState(newState)
+		try {
+			const newState = restCalc(weight, thick, curtemp, tartemp)
+			this.setState({ ...newState, error: null })
+		} catch (e) {
+			this.setState({ error: e.message })
+		}
 	}
 
 	handleChange = (val, name) => {
@@ -22,11 +26,11 @@ class StepMashing extends Component {
 	}
 
 	clearForm = () => {
-		this.setState({...initialState})
+		this.setState({ ...initialState })
 	}
 
 	render() {
-		const { curtemp, tartemp, thick, weight, restCalcValue } = this.state
+		const { curtemp, tartemp, thick, weight, restCalcValue, error } = this.state
 		const { title, intro } = this.props
 		return (
 			<div>
@@ -63,7 +67,8 @@ class StepMashing extends Component {
 					placeholder="ej: 60"
 					value={tartemp}
 					maxLength={4}
-				/> 
+				/>
+				{error && <p style={{ color: "red" }}>{error}</p>}
 				{restCalcValue && (
 					<p>
 						Litros de agua hirviendo (100ºC) que se deben añadir: <strong>{restCalcValue}</strong>

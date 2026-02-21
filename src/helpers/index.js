@@ -10,8 +10,7 @@ export function numberWithoutCommas(x) {
 
 export function checkVal(val, text) {
 	if (val.length === 0 || isNaN(val.toString().replace(",", "."))) {
-		alert("El valor de [" + text + "] no es correcto.")
-		return false
+		throw new Error("El valor de [" + text + "] no es correcto.")
 	}
 	return true
 }
