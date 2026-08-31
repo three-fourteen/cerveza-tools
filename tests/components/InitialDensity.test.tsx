@@ -24,7 +24,6 @@ describe('InitialDensity', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    // initialCalc valida densityAfter primero aunque sea el 4º parámetro
     expect(screen.getByText(/El valor de \[Densidad después de hervir\]/)).toBeInTheDocument()
   })
 

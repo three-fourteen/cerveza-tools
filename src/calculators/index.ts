@@ -121,7 +121,7 @@ export function evaporationCalc(densityBefore: string, volume: string, timeValue
   return { evaporationResult: round(lostHour, 2), volumeEvaporationResult: round(endVolume, 1) }
 }
 
-export function initialCalc(evaporation: string, volume: string, timeValue: string, densityAfter: string) {
+export function initialCalc(densityAfter: string, volume: string, timeValue: string, evaporation: string) {
   checkVal(densityAfter, 'Densidad después de hervir')
   checkVal(volume, 'Volumen después de hervir')
   checkVal(timeValue, 'Tiempo hervido')

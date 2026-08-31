@@ -17,7 +17,7 @@ function InitialDensity({ title, intro }: InitialDensityProps) {
 
   function calculate() {
     try {
-      setResult(initialCalc(evaporation, volume, timeValue, densityAfter))
+      setResult(initialCalc(densityAfter, volume, timeValue, evaporation))
       setError(null)
     } catch (e) {
       setError((e as Error).message)
