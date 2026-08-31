@@ -8,6 +8,8 @@
 
 # production
 /build
+/dist
+/dist-demo
 
 # NPM
 /es

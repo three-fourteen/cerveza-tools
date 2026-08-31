@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "clean": "rm -rf dist",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "clean": "rm -rf dist dist-demo",
     "dev": "vite --config vite.demo.config.ts",
     "test": "vitest run",
     "test:watch": "vitest",
