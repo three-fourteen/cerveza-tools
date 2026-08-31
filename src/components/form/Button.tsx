@@ -1,5 +1,5 @@
 import React from 'react'
-import './button.css'
+import styles from './Button.module.css'
 
 interface ButtonProps {
   label: string
@@ -10,8 +10,9 @@ interface ButtonProps {
 }
 
 function Button({ label, type = 'button', style = 'primary', onClick, disabled = false }: ButtonProps) {
+  const cls = [styles.btn, styles[`btn-${style}`]].filter(Boolean).join(' ')
   return (
-    <button onClick={onClick} type={type} className={`btn btn-${style}`} disabled={disabled}>
+    <button onClick={onClick} type={type} className={cls} disabled={disabled}>
       {label}
     </button>
   )

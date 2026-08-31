@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { mashVolCalc } from '../../calculators'
 
@@ -8,6 +8,7 @@ interface MashVolumeProps {
 }
 
 function MashVolume({ title, intro }: MashVolumeProps) {
+  const errorId = useId()
   const [weight, setWeight] = useState('')
   const [thick, setThick] = useState('')
   const [result, setResult] = useState<{ mashVolCalcValue: string } | null>(null)
@@ -34,9 +35,9 @@ function MashVolume({ title, intro }: MashVolumeProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Peso del grano en Kg" name="weight" handleInputChange={(v) => setWeight(v)} placeholder="ej: 5" value={weight} maxLength={4} />
-      <NumericField label="Litros de agua por Kg de grano" name="thick" handleInputChange={(v) => setThick(v)} placeholder="ej: 3" value={thick} maxLength={4} />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <NumericField label="Peso del grano en Kg" name="weight" handleInputChange={(v) => setWeight(v)} placeholder="ej: 5" value={weight} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Litros de agua por Kg de grano" name="thick" handleInputChange={(v) => setThick(v)} placeholder="ej: 3" value={thick} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
       {result && (
         <p>El macerado ocupara un volumen de: <strong>{result.mashVolCalcValue}</strong> L</p>
       )}

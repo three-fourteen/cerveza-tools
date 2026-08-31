@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { restCalc } from '../../calculators'
 
@@ -8,6 +8,7 @@ interface StepMashingProps {
 }
 
 function StepMashing({ title, intro }: StepMashingProps) {
+  const errorId = useId()
   const [weight, setWeight] = useState('')
   const [thick, setThick] = useState('')
   const [curtemp, setCurtemp] = useState('')
@@ -38,11 +39,11 @@ function StepMashing({ title, intro }: StepMashingProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Peso del grano en Kg" name="weight" handleInputChange={(v) => setWeight(v)} placeholder="ej: 5" value={weight} maxLength={4} />
-      <NumericField label="Litros de agua por Kg de grano" name="thick" handleInputChange={(v) => setThick(v)} placeholder="ej: 3" value={thick} maxLength={4} />
-      <NumericField label="Temperatura actual (ºC)" name="curtemp" handleInputChange={(v) => setCurtemp(v)} placeholder="ej: 50" value={curtemp} maxLength={4} />
-      <NumericField label="Temperatura objetivo (ºC)" name="tartemp" handleInputChange={(v) => setTartemp(v)} placeholder="ej: 60" value={tartemp} maxLength={4} />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <NumericField label="Peso del grano en Kg" name="weight" handleInputChange={(v) => setWeight(v)} placeholder="ej: 5" value={weight} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Litros de agua por Kg de grano" name="thick" handleInputChange={(v) => setThick(v)} placeholder="ej: 3" value={thick} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Temperatura actual (ºC)" name="curtemp" handleInputChange={(v) => setCurtemp(v)} placeholder="ej: 50" value={curtemp} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Temperatura objetivo (ºC)" name="tartemp" handleInputChange={(v) => setTartemp(v)} placeholder="ej: 60" value={tartemp} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
       {result && (
         <p>Litros de agua hirviendo (100ºC) que se deben añadir: <strong>{result.restCalcValue}</strong></p>
       )}

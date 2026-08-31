@@ -114,12 +114,16 @@ describe('evaporationCalc', () => {
 
 describe('initialCalc', () => {
   it('calcula la densidad y volumen inicial antes de hervir', () => {
-    const result = initialCalc('6', '25', '60', '1060')
+    const result = initialCalc('1060', '25', '60', '6')
     expect(result.densityResult).toBeDefined()
     expect(result.volumeResult).toBeDefined()
   })
 
+  it('lanza error si la densidad después de hervir está vacía', () => {
+    expect(() => initialCalc('', '25', '60', '6')).toThrow(/Densidad después de hervir/)
+  })
+
   it('lanza error si la evaporación está vacía', () => {
-    expect(() => initialCalc('', '25', '60', '1060')).toThrow(/Perdida de volumen/)
+    expect(() => initialCalc('1060', '25', '60', '')).toThrow(/Perdida de volumen/)
   })
 })

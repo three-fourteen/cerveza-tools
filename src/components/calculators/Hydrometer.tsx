@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { hydrometerCorrection } from '../../calculators'
 
@@ -8,6 +8,7 @@ interface HydrometerProps {
 }
 
 function Hydrometer({ title, intro }: HydrometerProps) {
+  const errorId = useId()
   const [hydrometer, setHydrometer] = useState('')
   const [temp, setTemp] = useState('')
   const [cTemp, setCTemp] = useState('')
@@ -36,10 +37,10 @@ function Hydrometer({ title, intro }: HydrometerProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Densidad" name="hydrometer" handleInputChange={(v) => setHydrometer(v)} placeholder="ej: 1040" value={hydrometer} maxLength={4} />
-      <NumericField label="Temperatura (ºC)" name="temp" handleInputChange={(v) => setTemp(v)} placeholder="ej: 67" value={temp} />
-      <NumericField label="Temperatura ajuste densimetro (ºC)" name="cTemp" handleInputChange={(v) => setCTemp(v)} placeholder="Ej: 20" value={cTemp} />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <NumericField label="Densidad" name="hydrometer" handleInputChange={(v) => setHydrometer(v)} placeholder="ej: 1040" value={hydrometer} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Temperatura (ºC)" name="temp" handleInputChange={(v) => setTemp(v)} placeholder="ej: 67" value={temp} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Temperatura ajuste densimetro (ºC)" name="cTemp" handleInputChange={(v) => setCTemp(v)} placeholder="Ej: 20" value={cTemp} ariaDescribedby={error ? errorId : undefined} />
+      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
       {result && (
         <p>
           La densidad corregida es: <strong>{result.cHydrometer}</strong>

@@ -10,6 +10,7 @@ interface NumericFieldProps {
   maxLength?: number
   disabled?: boolean
   handleInputChange?: (value: string, name: string) => void
+  ariaDescribedby?: string
 }
 
 function formatValue(value: string | number | undefined): string {
@@ -27,6 +28,7 @@ function NumericField({
   maxLength = Infinity,
   disabled,
   handleInputChange,
+  ariaDescribedby,
 }: NumericFieldProps) {
   const [inputValue, setInputValue] = useState(() => formatValue(value))
   const focusRef = useRef(false)
@@ -93,6 +95,7 @@ function NumericField({
       handleBlur={handleBlur}
       handleFocus={handleFocus}
       handleKeyDown={handleKeyDown}
+      ariaDescribedby={ariaDescribedby}
     />
   )
 }

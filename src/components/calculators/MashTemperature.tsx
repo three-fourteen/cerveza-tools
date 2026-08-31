@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { strikeCalc } from '../../calculators'
 
@@ -8,6 +8,7 @@ interface MashTemperatureProps {
 }
 
 function MashTemperature({ title, intro }: MashTemperatureProps) {
+  const errorId = useId()
   const [thick, setThick] = useState('')
   const [strtemp, setStrtemp] = useState('')
   const [grntemp, setGrntemp] = useState('')
@@ -36,10 +37,10 @@ function MashTemperature({ title, intro }: MashTemperatureProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Litros de agua por Kg de grano" name="thick" handleInputChange={(v) => setThick(v)} placeholder="ej: 3" value={thick} maxLength={4} />
-      <NumericField label="Temperatura objetivo del macerado" name="strtemp" handleInputChange={(v) => setStrtemp(v)} placeholder="ej: 67" value={strtemp} maxLength={4} />
-      <NumericField label="Temperatura del grano" name="grntemp" handleInputChange={(v) => setGrntemp(v)} placeholder="ej: 18" value={grntemp} maxLength={4} />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <NumericField label="Litros de agua por Kg de grano" name="thick" handleInputChange={(v) => setThick(v)} placeholder="ej: 3" value={thick} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Temperatura objetivo del macerado" name="strtemp" handleInputChange={(v) => setStrtemp(v)} placeholder="ej: 67" value={strtemp} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Temperatura del grano" name="grntemp" handleInputChange={(v) => setGrntemp(v)} placeholder="ej: 18" value={grntemp} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
       {result && (
         <p>La temperatura del agua tiene que ser de: <strong>{result.strikeCalcValue}</strong>ºC</p>
       )}
