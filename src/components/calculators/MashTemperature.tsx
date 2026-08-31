@@ -1,13 +1,17 @@
 import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { strikeCalc } from '../../calculators'
+import { t, useLocale, type Locale } from '../../i18n'
 
 interface MashTemperatureProps {
   title?: string
   intro?: string
+  locale?: Locale
 }
 
-function MashTemperature({ title, intro }: MashTemperatureProps) {
+function MashTemperature({ title, intro, locale }: MashTemperatureProps) {
+  const contextLocale = useLocale()
+  const activeLocale = locale ?? contextLocale
   const errorId = useId()
   const [thick, setThick] = useState('')
   const [strtemp, setStrtemp] = useState('')
@@ -17,7 +21,7 @@ function MashTemperature({ title, intro }: MashTemperatureProps) {
 
   function calculate() {
     try {
-      setResult(strikeCalc(thick, strtemp, grntemp))
+      setResult(strikeCalc(thick, strtemp, grntemp, activeLocale))
       setError(null)
     } catch (e) {
       setError((e as Error).message)
@@ -37,15 +41,45 @@ function MashTemperature({ title, intro }: MashTemperatureProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Litros de agua por Kg de grano" name="thick" handleInputChange={(v) => setThick(v)} placeholder="ej: 3" value={thick} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
-      <NumericField label="Temperatura objetivo del macerado" name="strtemp" handleInputChange={(v) => setStrtemp(v)} placeholder="ej: 67" value={strtemp} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
-      <NumericField label="Temperatura del grano" name="grntemp" handleInputChange={(v) => setGrntemp(v)} placeholder="ej: 18" value={grntemp} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
-      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
-      {result && (
-        <p>La temperatura del agua tiene que ser de: <strong>{result.strikeCalcValue}</strong>ºC</p>
+      <NumericField
+        label={t(activeLocale, 'calculators.mashTemperature.labelThick')}
+        name="thick"
+        handleInputChange={(v) => setThick(v)}
+        placeholder={t(activeLocale, 'calculators.mashTemperature.placeholderThick')}
+        value={thick}
+        maxLength={4}
+        ariaDescribedby={error ? errorId : undefined}
+      />
+      <NumericField
+        label={t(activeLocale, 'calculators.mashTemperature.labelStrTemp')}
+        name="strtemp"
+        handleInputChange={(v) => setStrtemp(v)}
+        placeholder={t(activeLocale, 'calculators.mashTemperature.placeholderStrTemp')}
+        value={strtemp}
+        maxLength={4}
+        ariaDescribedby={error ? errorId : undefined}
+      />
+      <NumericField
+        label={t(activeLocale, 'calculators.mashTemperature.labelGrnTemp')}
+        name="grntemp"
+        handleInputChange={(v) => setGrntemp(v)}
+        placeholder={t(activeLocale, 'calculators.mashTemperature.placeholderGrnTemp')}
+        value={grntemp}
+        maxLength={4}
+        ariaDescribedby={error ? errorId : undefined}
+      />
+      {error && (
+        <p id={errorId} role="alert" style={{ color: 'red' }}>
+          {error}
+        </p>
       )}
-      <Button onClick={calculate} label="Calcular" />
-      <Button onClick={clear} label="Limpiar" />
+      {result && (
+        <p>
+          {t(activeLocale, 'calculators.mashTemperature.result')} <strong>{result.strikeCalcValue}</strong>ºC
+        </p>
+      )}
+      <Button onClick={calculate} label={t(activeLocale, 'ui.calculate')} />
+      <Button onClick={clear} label={t(activeLocale, 'ui.clear')} />
     </div>
   )
 }

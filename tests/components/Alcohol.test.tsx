@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import Alcohol from '../../src/components/calculators/Alcohol'
+import { LocaleProvider } from '../../src/i18n'
 
 describe('Alcohol', () => {
   it('muestra resultado con valores válidos', async () => {
@@ -76,5 +77,37 @@ describe('Alcohol', () => {
     render(<Alcohol />)
 
     expect(screen.queryByRole('heading')).not.toBeInTheDocument()
+  })
+
+  it('usa inglés cuando se pasa locale="en"', async () => {
+    const user = userEvent.setup()
+    render(<Alcohol locale="en" />)
+
+    expect(screen.getByText('Initial gravity')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Calculate' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Calculate' }))
+
+    expect(screen.getByRole('alert')).toHaveTextContent(/Initial gravity/)
+  })
+
+  it('usa el locale del LocaleProvider si no se pasa la prop', () => {
+    render(
+      <LocaleProvider locale="en">
+        <Alcohol />
+      </LocaleProvider>,
+    )
+
+    expect(screen.getByText('Initial gravity')).toBeInTheDocument()
+  })
+
+  it('la prop locale tiene prioridad sobre el LocaleProvider', () => {
+    render(
+      <LocaleProvider locale="en">
+        <Alcohol locale="es" />
+      </LocaleProvider>,
+    )
+
+    expect(screen.getByText('Densidad inicial')).toBeInTheDocument()
   })
 })
