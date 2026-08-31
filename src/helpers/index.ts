@@ -1,3 +1,5 @@
+import { t, type Locale } from '../i18n'
+
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
 export function numberWithCommas(x: number | string): string {
   return new Intl.NumberFormat('en-EN').format(Number(x))
@@ -8,9 +10,9 @@ export function numberWithoutCommas(x: string): string {
   return (x + '').replace(/(?:\$ )|,/g, '')
 }
 
-export function checkVal(val: string, text: string): true {
+export function checkVal(val: string, fieldKey: string, locale: Locale = 'es'): true {
   if (val.length === 0 || isNaN(parseFloat(val.toString().replace(',', '.')))) {
-    throw new Error(`El valor de [${text}] no es correcto.`)
+    throw new Error(t(locale, 'errors.invalidField', { field: t(locale, `fields.${fieldKey}`) }))
   }
   return true
 }

@@ -1,13 +1,17 @@
 import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { evaporationCalc } from '../../calculators'
+import { t, useLocale, type Locale } from '../../i18n'
 
 interface EvaporationProps {
   title?: string
   intro?: string
+  locale?: Locale
 }
 
-function Evaporation({ title, intro }: EvaporationProps) {
+function Evaporation({ title, intro, locale }: EvaporationProps) {
+  const contextLocale = useLocale()
+  const activeLocale = locale ?? contextLocale
   const errorId = useId()
   const [densityBefore, setDensityBefore] = useState('')
   const [volume, setVolume] = useState('')
@@ -18,7 +22,7 @@ function Evaporation({ title, intro }: EvaporationProps) {
 
   function calculate() {
     try {
-      setResult(evaporationCalc(densityBefore, volume, timeValue, densityAfter))
+      setResult(evaporationCalc(densityBefore, volume, timeValue, densityAfter, activeLocale))
       setError(null)
     } catch (e) {
       setError((e as Error).message)
@@ -39,19 +43,58 @@ function Evaporation({ title, intro }: EvaporationProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Densidad antes de hervir" name="densityBefore" handleInputChange={(v) => setDensityBefore(v)} placeholder="ej: 1040" value={densityBefore} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
-      <NumericField label="Volumen antes de hervir (litros)" name="volume" handleInputChange={(v) => setVolume(v)} placeholder="ej: 30" value={volume} ariaDescribedby={error ? errorId : undefined} />
-      <NumericField label="Tiempo de hervido (minutos)" name="timeValue" handleInputChange={(v) => setTimeValue(v)} placeholder="Ej: 60" value={timeValue} ariaDescribedby={error ? errorId : undefined} />
-      <NumericField label="Densidad después de hervir" name="densityAfter" handleInputChange={(v) => setDensityAfter(v)} placeholder="ej: 1050" value={densityAfter} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
-      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
+      <NumericField
+        label={t(activeLocale, 'calculators.evaporation.labelDensityBefore')}
+        name="densityBefore"
+        handleInputChange={(v) => setDensityBefore(v)}
+        placeholder={t(activeLocale, 'calculators.evaporation.placeholderDensityBefore')}
+        value={densityBefore}
+        maxLength={4}
+        ariaDescribedby={error ? errorId : undefined}
+      />
+      <NumericField
+        label={t(activeLocale, 'calculators.evaporation.labelVolume')}
+        name="volume"
+        handleInputChange={(v) => setVolume(v)}
+        placeholder={t(activeLocale, 'calculators.evaporation.placeholderVolume')}
+        value={volume}
+        ariaDescribedby={error ? errorId : undefined}
+      />
+      <NumericField
+        label={t(activeLocale, 'calculators.evaporation.labelTime')}
+        name="timeValue"
+        handleInputChange={(v) => setTimeValue(v)}
+        placeholder={t(activeLocale, 'calculators.evaporation.placeholderTime')}
+        value={timeValue}
+        ariaDescribedby={error ? errorId : undefined}
+      />
+      <NumericField
+        label={t(activeLocale, 'calculators.evaporation.labelDensityAfter')}
+        name="densityAfter"
+        handleInputChange={(v) => setDensityAfter(v)}
+        placeholder={t(activeLocale, 'calculators.evaporation.placeholderDensityAfter')}
+        value={densityAfter}
+        maxLength={4}
+        ariaDescribedby={error ? errorId : undefined}
+      />
+      {error && (
+        <p id={errorId} role="alert" style={{ color: 'red' }}>
+          {error}
+        </p>
+      )}
       {result && (
         <>
-          <p>La perdida por evaporación es: <strong>{result.evaporationResult}</strong>L/h</p>
-          <p>El volumen después de hervir es: <strong>{result.volumeEvaporationResult}</strong>L</p>
+          <p>
+            {t(activeLocale, 'calculators.evaporation.resultRate')} <strong>{result.evaporationResult}</strong>L/h
+          </p>
+          <p>
+            {t(activeLocale, 'calculators.evaporation.resultVolume')}{' '}
+            <strong>{result.volumeEvaporationResult}</strong>L
+          </p>
         </>
       )}
-      <Button onClick={calculate} label="Calcular" />
-      <Button onClick={clear} label="Limpiar" />
+      <Button onClick={calculate} label={t(activeLocale, 'ui.calculate')} />
+      <Button onClick={clear} label={t(activeLocale, 'ui.clear')} />
     </div>
   )
 }

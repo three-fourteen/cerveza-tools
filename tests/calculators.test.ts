@@ -8,6 +8,10 @@ import {
   dilutionCalc,
   evaporationCalc,
   initialCalc,
+  ibuCalc,
+  colorCalc,
+  carbonationCalc,
+  efficiencyCalc,
 } from '../src/calculators'
 
 describe('hydrometerCorrection', () => {
@@ -47,6 +51,10 @@ describe('alcoholCalc', () => {
 
   it('lanza error si la densidad final está vacía', () => {
     expect(() => alcoholCalc('1050', '')).toThrow(/Densidad final/)
+  })
+
+  it('lanza el error en inglés si se pasa locale "en"', () => {
+    expect(() => alcoholCalc('', '1010', 'en')).toThrow(/Initial gravity/)
   })
 })
 
@@ -125,5 +133,65 @@ describe('initialCalc', () => {
 
   it('lanza error si la evaporación está vacía', () => {
     expect(() => initialCalc('1060', '25', '60', '')).toThrow(/Perdida de volumen/)
+  })
+})
+
+describe('ibuCalc', () => {
+  it('calcula el amargor en IBU', () => {
+    const result = ibuCalc('20', '5', '60', '20', '1050')
+    expect(result.ibuCalcValue).toBeDefined()
+    expect(Number(result.ibuCalcValue.replace(',', '.'))).toBeGreaterThan(0)
+  })
+
+  it('acepta la densidad en formato decimal', () => {
+    const result = ibuCalc('20', '5', '60', '20', '1.050')
+    expect(result.ibuCalcValue).toBeDefined()
+  })
+
+  it('lanza error si el peso del lúpulo está vacío', () => {
+    expect(() => ibuCalc('', '5', '60', '20', '1050')).toThrow(/lúpulo/)
+  })
+
+  it('lanza el error en inglés si se pasa locale "en"', () => {
+    expect(() => ibuCalc('', '5', '60', '20', '1050', 'en')).toThrow(/Hop weight/)
+  })
+})
+
+describe('colorCalc', () => {
+  it('calcula el color en SRM y EBC', () => {
+    const result = colorCalc('5', '3.5', '20')
+    expect(result.srmCalcValue).toBeDefined()
+    expect(result.ebcCalcValue).toBeDefined()
+  })
+
+  it('lanza error si el peso del grano está vacío', () => {
+    expect(() => colorCalc('', '3.5', '20')).toThrow(/grano/)
+  })
+})
+
+describe('carbonationCalc', () => {
+  it('calcula el azúcar de cebado necesario', () => {
+    const result = carbonationCalc('20', '2.4', '0.8')
+    expect(result.carbonationCalcValue).toBeDefined()
+    expect(Number(result.carbonationCalcValue.replace(',', '.'))).toBeGreaterThan(0)
+  })
+
+  it('lanza error si el volumen está vacío', () => {
+    expect(() => carbonationCalc('', '2.4', '0.8')).toThrow(/Volumen/)
+  })
+})
+
+describe('efficiencyCalc', () => {
+  it('calcula la eficiencia real del macerado', () => {
+    const result = efficiencyCalc('1090', '1045')
+    expect(result.efficiencyCalcValue).toContain('%')
+  })
+
+  it('lanza error si la densidad potencial está vacía', () => {
+    expect(() => efficiencyCalc('', '1045')).toThrow(/potencial/)
+  })
+
+  it('lanza error si la densidad real está vacía', () => {
+    expect(() => efficiencyCalc('1090', '')).toThrow(/real obtenida/)
   })
 })

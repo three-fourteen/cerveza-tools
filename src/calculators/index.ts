@@ -1,4 +1,5 @@
 import { checkVal, parseFloatEx, round } from '../helpers'
+import type { Locale } from '../i18n'
 
 // Convierte densidad en formato 1040 o 1.040 a puntos de gravedad (ej: 40)
 function densityToPoints(density: number): number {
@@ -10,10 +11,10 @@ function densityToPoints(density: number): number {
 }
 
 // Correcion densimetro
-export function hydrometerCorrection(hydrometer: string, temp: string, cTemp: string) {
-  checkVal(hydrometer, 'Lectura densidad')
-  checkVal(temp, 'Temperatura')
-  checkVal(cTemp, 'Temperatura ajuste densimetro')
+export function hydrometerCorrection(hydrometer: string, temp: string, cTemp: string, locale: Locale = 'es') {
+  checkVal(hydrometer, 'hydrometerReading', locale)
+  checkVal(temp, 'temperature', locale)
+  checkVal(cTemp, 'hydrometerAdjustTemp', locale)
 
   let hydrometerParsed = parseFloatEx(hydrometer)
   if (hydrometerParsed.toString().indexOf('.') === -1) hydrometerParsed = hydrometerParsed / 1000
@@ -32,9 +33,9 @@ function calculateTempCorrection(temp: number): number {
 }
 
 // Calcular alcohol y atenuacion
-export function alcoholCalc(DO: string, DF: string) {
-  checkVal(DO, 'Densidad inicial')
-  checkVal(DF, 'Densidad final')
+export function alcoholCalc(DO: string, DF: string, locale: Locale = 'es') {
+  checkVal(DO, 'initialDensity', locale)
+  checkVal(DF, 'finalDensity', locale)
 
   const pointsDO = densityToPoints(parseFloatEx(DO))
   const pointsDF = densityToPoints(parseFloatEx(DF))
@@ -49,11 +50,11 @@ export function alcoholCalc(DO: string, DF: string) {
 }
 
 // Temperatura escalonada
-export function restCalc(weight: string, thick: string, curtemp: string, tartemp: string) {
-  checkVal(weight, 'Peso del grano en Kg')
-  checkVal(thick, 'Litros de agua por Kg de grano')
-  checkVal(curtemp, 'Temperatura actual')
-  checkVal(tartemp, 'Temperatura objetivo')
+export function restCalc(weight: string, thick: string, curtemp: string, tartemp: string, locale: Locale = 'es') {
+  checkVal(weight, 'grainWeight', locale)
+  checkVal(thick, 'waterPerKgGrain', locale)
+  checkVal(curtemp, 'currentTemp', locale)
+  checkVal(tartemp, 'targetTemp', locale)
 
   const w = parseFloatEx(weight)
   const t = parseFloatEx(thick)
@@ -65,10 +66,10 @@ export function restCalc(weight: string, thick: string, curtemp: string, tartemp
 }
 
 // Temperatura macerado
-export function strikeCalc(thick: string, strtemp: string, grntemp: string) {
-  checkVal(thick, 'Litros de agua por Kg de grano')
-  checkVal(strtemp, 'Temperatura objetivo del macerado')
-  checkVal(grntemp, 'Temperatura del grano')
+export function strikeCalc(thick: string, strtemp: string, grntemp: string, locale: Locale = 'es') {
+  checkVal(thick, 'waterPerKgGrain', locale)
+  checkVal(strtemp, 'targetMashTemp', locale)
+  checkVal(grntemp, 'grainTemp', locale)
 
   const t = parseFloatEx(thick)
   const str = parseFloatEx(strtemp)
@@ -79,9 +80,9 @@ export function strikeCalc(thick: string, strtemp: string, grntemp: string) {
 }
 
 // Volumen de macerado
-export function mashVolCalc(weight: string, thick: string) {
-  checkVal(weight, 'Peso del grano en Kg')
-  checkVal(thick, 'Litros de agua por Kg de grano')
+export function mashVolCalc(weight: string, thick: string, locale: Locale = 'es') {
+  checkVal(weight, 'grainWeight', locale)
+  checkVal(thick, 'waterPerKgGrain', locale)
 
   const w = parseFloatEx(weight)
   const t = parseFloatEx(thick)
@@ -90,10 +91,10 @@ export function mashVolCalc(weight: string, thick: string) {
   return { mashVolCalcValue: round(vol, 2) }
 }
 
-export function dilutionCalc(DO: string, DF: string, volume: string) {
-  checkVal(DO, 'Densidad actual')
-  checkVal(DF, 'Densidad objetivo')
-  checkVal(volume, 'Volumen en litros')
+export function dilutionCalc(DO: string, DF: string, volume: string, locale: Locale = 'es') {
+  checkVal(DO, 'currentDensity', locale)
+  checkVal(DF, 'targetDensity', locale)
+  checkVal(volume, 'volumeLiters', locale)
 
   const pointsDO = densityToPoints(parseFloatEx(DO))
   const pointsDF = densityToPoints(parseFloatEx(DF))
@@ -103,11 +104,17 @@ export function dilutionCalc(DO: string, DF: string, volume: string) {
   return { dilutionCalcValue: parseFloat(water.toString()).toFixed(3) }
 }
 
-export function evaporationCalc(densityBefore: string, volume: string, timeValue: string, densityAfter: string) {
-  checkVal(densityBefore, 'Densidad inicial')
-  checkVal(volume, 'Volumen inicial')
-  checkVal(timeValue, 'Tiempo hervido')
-  checkVal(densityAfter, 'Densidad final')
+export function evaporationCalc(
+  densityBefore: string,
+  volume: string,
+  timeValue: string,
+  densityAfter: string,
+  locale: Locale = 'es',
+) {
+  checkVal(densityBefore, 'initialDensity', locale)
+  checkVal(volume, 'initialVolume', locale)
+  checkVal(timeValue, 'boilTime', locale)
+  checkVal(densityAfter, 'finalDensity', locale)
 
   const pointsBefore = densityToPoints(parseFloatEx(densityBefore))
   const pointsAfter = densityToPoints(parseFloatEx(densityAfter))
@@ -121,11 +128,17 @@ export function evaporationCalc(densityBefore: string, volume: string, timeValue
   return { evaporationResult: round(lostHour, 2), volumeEvaporationResult: round(endVolume, 1) }
 }
 
-export function initialCalc(densityAfter: string, volume: string, timeValue: string, evaporation: string) {
-  checkVal(densityAfter, 'Densidad después de hervir')
-  checkVal(volume, 'Volumen después de hervir')
-  checkVal(timeValue, 'Tiempo hervido')
-  checkVal(evaporation, 'Perdida de volumen en l/h')
+export function initialCalc(
+  densityAfter: string,
+  volume: string,
+  timeValue: string,
+  evaporation: string,
+  locale: Locale = 'es',
+) {
+  checkVal(densityAfter, 'densityAfterBoil', locale)
+  checkVal(volume, 'volumeAfterBoil', locale)
+  checkVal(timeValue, 'boilTime', locale)
+  checkVal(evaporation, 'evaporationRate', locale)
 
   const pointsAfter = densityToPoints(parseFloatEx(densityAfter))
   const vol = parseFloatEx(volume)
@@ -139,4 +152,80 @@ export function initialCalc(densityAfter: string, volume: string, timeValue: str
     densityResult: parseFloat((1000 + initialDensity).toString()).toFixed(0),
     volumeResult: round(initialVolume, 2),
   }
+}
+
+// IBU (fórmula de Tinseth)
+export function ibuCalc(
+  weight: string,
+  alphaAcid: string,
+  boilTime: string,
+  volume: string,
+  gravity: string,
+  locale: Locale = 'es',
+) {
+  checkVal(weight, 'hopWeight', locale)
+  checkVal(alphaAcid, 'alphaAcid', locale)
+  checkVal(boilTime, 'boilTimeMinutes', locale)
+  checkVal(volume, 'wortVolume', locale)
+  checkVal(gravity, 'boilGravity', locale)
+
+  const w = parseFloatEx(weight)
+  const aa = parseFloatEx(alphaAcid) / 100
+  const time = parseFloatEx(boilTime)
+  const vol = parseFloatEx(volume)
+  let gravityParsed = parseFloatEx(gravity)
+  if (gravityParsed.toString().indexOf('.') === -1) gravityParsed = gravityParsed / 1000
+
+  const bignessFactor = 1.65 * Math.pow(0.000125, gravityParsed - 1)
+  const boilTimeFactor = (1 - Math.exp(-0.04 * time)) / 4.15
+  const utilization = bignessFactor * boilTimeFactor
+  const mgPerLiter = (w * aa * 1000) / vol
+  const ibu = utilization * mgPerLiter
+
+  return { ibuCalcValue: round(ibu, 1) }
+}
+
+// Color final estimado (fórmula de Morey), en SRM y EBC
+export function colorCalc(weight: string, colorLovibond: string, volume: string, locale: Locale = 'es') {
+  checkVal(weight, 'grainWeight', locale)
+  checkVal(colorLovibond, 'grainColorLovibond', locale)
+  checkVal(volume, 'volumeLiters', locale)
+
+  const weightLb = parseFloatEx(weight) * 2.20462
+  const color = parseFloatEx(colorLovibond)
+  const volumeGal = parseFloatEx(volume) * 0.264172
+
+  const mcu = (weightLb * color) / volumeGal
+  const srm = 1.4922 * Math.pow(mcu, 0.6859)
+  const ebc = srm * 1.97
+
+  return { srmCalcValue: round(srm, 1), ebcCalcValue: round(ebc, 1) }
+}
+
+// Azúcar de cebado para carbonatación en botella (azúcar de mesa)
+export function carbonationCalc(volume: string, targetCO2: string, residualCO2: string, locale: Locale = 'es') {
+  checkVal(volume, 'volumeLiters', locale)
+  checkVal(targetCO2, 'targetCO2', locale)
+  checkVal(residualCO2, 'residualCO2', locale)
+
+  const vol = parseFloatEx(volume)
+  const target = parseFloatEx(targetCO2)
+  const residual = parseFloatEx(residualCO2)
+
+  const sugar = 4 * vol * (target - residual)
+
+  return { carbonationCalcValue: round(sugar, 1) }
+}
+
+// Eficiencia real del macerado vs. la densidad potencial del grano
+export function efficiencyCalc(theoreticalDensity: string, actualDensity: string, locale: Locale = 'es') {
+  checkVal(theoreticalDensity, 'theoreticalGrainDensity', locale)
+  checkVal(actualDensity, 'actualDensity', locale)
+
+  const potentialPoints = densityToPoints(parseFloatEx(theoreticalDensity))
+  const actualPoints = densityToPoints(parseFloatEx(actualDensity))
+
+  const efficiency = (actualPoints / potentialPoints) * 100
+
+  return { efficiencyCalcValue: `${round(efficiency, 1)} %` }
 }

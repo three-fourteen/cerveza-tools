@@ -16,6 +16,10 @@
 | CSS Modules | ✅ |
 | Deploy demo a GitHub Pages | ✅ (activo al mergear a main) |
 | Publicado en npm | ❌ |
+| Storybook con args/argTypes (Controls) | ✅ |
+| CSS custom properties para theming | ✅ |
+| Calculadoras: IBU, Color, Carbonatación, Eficiencia | ✅ |
+| Internacionalización (es/en) | ✅ |
 
 ---
 
@@ -37,36 +41,33 @@ Pasos para la versión 2.0.0:
 
 ## Medio plazo
 
-### 3. Tema visual de la demo en la librería
-Los componentes usan CSS Modules con los colores base de Bootstrap.
-Para que se vean con el tema marrón/cerveza fuera de la demo, se pueden
-exponer CSS custom properties (variables) que el consumidor sobreescriba:
+### 3. ~~Tema visual de la demo en la librería~~ ✅
+Los componentes de formulario (`Button`, `InputField`, `NumericField`) ya
+exponen CSS custom properties (`--ct-color-primary`, `--ct-border-radius`,
+etc.) con los valores Bootstrap como fallback. Ver sección "Theming" del
+README. `demo/styles.css` las usa para aplicar el tema marrón/cerveza.
 
-```css
-:root {
-  --ct-color-primary: #007bff;
-  --ct-border-radius: 0.25rem;
-}
-```
+### 4. ~~Storybook: migrar de Knobs a Controls~~ ✅
+Cada componente tiene su propio archivo de story (`stories/calculators/*`,
+`stories/form/*`) con `args`/`argTypes` de Storybook 8, con Controls
+interactivos en el panel.
 
-### 4. Storybook: migrar de Knobs a Controls
-Los stories actuales usan la API heredada. Migrar a `args` + `argTypes`
-de Storybook 8 para aprovechar los controles interactivos del panel.
-
-### 5. Más calculadoras
-- **IBU** — Unidades de amargor (Tinseth / Rager)
-- **Color SRM/EBC** — Color final estimado de la cerveza
-- **Carbonatación** — Azúcar para carbonatación en botella
-- **Eficiencia del macerado** — Eficiencia real vs. esperada
-- **Conversión de unidades** — °Plato ↔ SG, °F ↔ °C
+### 5. ~~Más calculadoras~~ ✅ (IBU, Color, Carbonatación, Eficiencia)
+- **IBU** — `<Ibu />` / `ibuCalc` (fórmula de Tinseth)
+- **Color SRM/EBC** — `<Color />` / `colorCalc` (fórmula de Morey)
+- **Carbonatación** — `<Carbonation />` / `carbonationCalc`
+- **Eficiencia del macerado** — `<Efficiency />` / `efficiencyCalc`
+- **Conversión de unidades** — °Plato ↔ SG, °F ↔ °C — pendiente
 
 ---
 
 ## Largo plazo
 
-### 6. Internacionalización
-Los textos están hardcodeados en español. Exponer los labels como props
-permite que el consumidor los traduzca sin forkear la librería.
+### 6. ~~Internacionalización~~ ✅
+Todos los componentes y funciones de cálculo aceptan una prop/parámetro
+`locale` (`'es'` por defecto, o `'en'`), y hay un `LocaleProvider` para
+setearlo una sola vez a nivel de app. Ver sección "Internacionalización"
+del README. Diccionarios en `src/i18n/dictionaries/`.
 
 ### 7. Accesibilidad avanzada
 - `aria-label` más descriptivo en los botones ("Calcular alcohol", "Limpiar formulario")

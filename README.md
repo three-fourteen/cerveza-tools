@@ -29,6 +29,10 @@ npm run dev
 | `<MashVolume />` | Volumen total del macerado |
 | `<StepMashing />` | Agua hirviendo para subir temperatura de macerado |
 | `<WaterDilution />` | Agua a añadir para diluir la densidad |
+| `<Ibu />` | Amargor (IBU) según la fórmula de Tinseth |
+| `<Color />` | Color final estimado en SRM/EBC según la fórmula de Morey |
+| `<Carbonation />` | Azúcar de cebado para carbonatación en botella |
+| `<Efficiency />` | Eficiencia real del macerado vs. la potencial |
 
 ## Instalación
 
@@ -53,6 +57,30 @@ function App() {
 
 Todos los componentes aceptan `title` e `intro` como props opcionales.
 
+## Theming
+
+Los componentes de formulario (`Button`, `InputField`, `NumericField`) usan
+CSS custom properties para sus colores y bordes, con los valores actuales
+(estilo Bootstrap) como fallback. Para aplicar tu propio tema sin sobreescribir
+los módulos CSS, definí estas variables en tu `:root` (o en cualquier
+contenedor que envuelva los componentes):
+
+```css
+:root {
+  --ct-color-primary: #007bff;
+  --ct-color-secondary: #6c757d;
+  --ct-color-success: #28a745;
+  --ct-color-danger: #dc3545;
+  --ct-border-radius: 0.25rem;
+  --ct-border-color: #ced4da;
+  --ct-text-color: #495057;
+  --ct-font-family: inherit;
+}
+```
+
+La demo (`demo/styles.css`) usa este mecanismo para aplicar su tema
+marrón/cerveza sin tocar la librería.
+
 ## Funciones de cálculo
 
 Las calculadoras también se exportan como funciones puras, sin UI:
@@ -67,12 +95,54 @@ import {
   mashVolCalc,
   restCalc,
   dilutionCalc,
+  ibuCalc,
+  colorCalc,
+  carbonationCalc,
+  efficiencyCalc,
 } from 'cerveza-tools'
 
 const { alcoholCalcValue, attenuationCalcValue } = alcoholCalc('1050', '1010')
 ```
 
 Las funciones lanzan un `Error` si algún parámetro es inválido o está vacío.
+
+## Internacionalización
+
+Todos los componentes y funciones de cálculo soportan español (`'es'`, por
+defecto) e inglés (`'en'`). Podés pasar `locale` a cada componente:
+
+```jsx
+import { Alcohol } from 'cerveza-tools'
+
+<Alcohol locale="en" />
+```
+
+O envolver toda la app una sola vez con `LocaleProvider`:
+
+```jsx
+import { LocaleProvider, Alcohol, Hydrometer } from 'cerveza-tools'
+
+function App() {
+  return (
+    <LocaleProvider locale="en">
+      <Alcohol />
+      <Hydrometer />
+    </LocaleProvider>
+  )
+}
+```
+
+Una prop `locale` en un componente puntual tiene prioridad sobre el
+`LocaleProvider`. Las funciones puras también aceptan `locale` como último
+parámetro:
+
+```ts
+alcoholCalc('1050', '1010', 'en')
+```
+
+Los diccionarios (`src/i18n/dictionaries/es.ts` y `en.ts`) son objetos planos
+de traducciones; para agregar un idioma nuevo alcanza con crear un diccionario
+que cumpla el mismo `Dictionary` type y registrarlo en `src/i18n/translate.ts`.
 
 ## Desarrollo
 
