@@ -23,7 +23,8 @@ describe('Alcohol', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Densidad inicial\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Densidad inicial/)
   })
 
   it('muestra error si solo falta densidad final', async () => {
@@ -33,7 +34,7 @@ describe('Alcohol', () => {
     await user.type(screen.getByPlaceholderText('ej: 1045'), '1050')
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Densidad final\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Densidad final/)
   })
 
   it('limpiar borra resultado y campos', async () => {
@@ -57,11 +58,11 @@ describe('Alcohol', () => {
     render(<Alcohol />)
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
-    expect(screen.getByText(/El valor de \[Densidad inicial\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Limpiar' }))
 
-    expect(screen.queryByText(/El valor de \[Densidad inicial\]/)).not.toBeInTheDocument()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
   it('renderiza title e intro cuando se pasan como props', () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { initialCalc } from '../../calculators'
 
@@ -8,6 +8,7 @@ interface InitialDensityProps {
 }
 
 function InitialDensity({ title, intro }: InitialDensityProps) {
+  const errorId = useId()
   const [densityAfter, setDensityAfter] = useState('')
   const [volume, setVolume] = useState('')
   const [timeValue, setTimeValue] = useState('')
@@ -38,11 +39,11 @@ function InitialDensity({ title, intro }: InitialDensityProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Densidad después de hervir" name="densityAfter" handleInputChange={(v) => setDensityAfter(v)} placeholder="ej: 1060" value={densityAfter} maxLength={4} />
-      <NumericField label="Volumen antes de hervir (litros)" name="volume" handleInputChange={(v) => setVolume(v)} placeholder="ej: 30" value={volume} />
-      <NumericField label="Tiempo de hervido (minutos)" name="timeValue" handleInputChange={(v) => setTimeValue(v)} placeholder="Ej: 60" value={timeValue} />
-      <NumericField label="Perdida de volumen en l/h" name="evaporation" handleInputChange={(v) => setEvaporation(v)} placeholder="Ej: 6" value={evaporation} />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <NumericField label="Densidad después de hervir" name="densityAfter" handleInputChange={(v) => setDensityAfter(v)} placeholder="ej: 1060" value={densityAfter} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Volumen antes de hervir (litros)" name="volume" handleInputChange={(v) => setVolume(v)} placeholder="ej: 30" value={volume} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Tiempo de hervido (minutos)" name="timeValue" handleInputChange={(v) => setTimeValue(v)} placeholder="Ej: 60" value={timeValue} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Perdida de volumen en l/h" name="evaporation" handleInputChange={(v) => setEvaporation(v)} placeholder="Ej: 6" value={evaporation} ariaDescribedby={error ? errorId : undefined} />
+      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
       {result && (
         <>
           <p>La densidad antes de hervir deberá de ser de: <strong>{result.densityResult}</strong></p>

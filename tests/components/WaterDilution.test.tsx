@@ -23,7 +23,7 @@ describe('WaterDilution', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Densidad actual\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Densidad actual/)
   })
 
   it('limpiar borra resultado y los tres campos', async () => {

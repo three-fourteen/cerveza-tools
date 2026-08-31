@@ -13,6 +13,7 @@ interface InputFieldProps {
   handleKeyDown: React.KeyboardEventHandler<HTMLInputElement>
   hideLabel?: boolean
   disabled?: boolean
+  ariaDescribedby?: string
 }
 
 function InputField({
@@ -27,6 +28,7 @@ function InputField({
   handleKeyDown,
   hideLabel,
   disabled,
+  ariaDescribedby,
 }: InputFieldProps) {
   const labelClass = hideLabel ? 'sr-only ' : ''
   return (
@@ -36,6 +38,7 @@ function InputField({
       </label>
       <input
         className="input-field"
+        id={name}
         type={type}
         name={name}
         placeholder={placeholder}
@@ -46,6 +49,7 @@ function InputField({
         onKeyDown={handleKeyDown}
         disabled={disabled}
         readOnly={!handleChange}
+        aria-describedby={ariaDescribedby}
       />
     </div>
   )

@@ -25,7 +25,7 @@ describe('Evaporation', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Densidad inicial\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Densidad inicial/)
   })
 
   it('limpiar borra resultado y los cuatro campos', async () => {

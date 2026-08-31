@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 import { NumericField, Button } from '../form'
 import { alcoholCalc } from '../../calculators'
 
@@ -8,6 +8,7 @@ interface AlcoholProps {
 }
 
 function Alcohol({ title, intro }: AlcoholProps) {
+  const errorId = useId()
   const [DO, setDO] = useState('')
   const [DF, setDF] = useState('')
   const [result, setResult] = useState<{ alcoholCalcValue: string; attenuationCalcValue: string } | null>(null)
@@ -34,9 +35,9 @@ function Alcohol({ title, intro }: AlcoholProps) {
     <div>
       {title && <h3>{title}</h3>}
       {intro && <p>{intro}</p>}
-      <NumericField label="Densidad inicial" name="DO" handleInputChange={(v) => setDO(v)} placeholder="ej: 1045" value={DO} maxLength={4} />
-      <NumericField label="Densidad final" name="DF" handleInputChange={(v) => setDF(v)} placeholder="ej: 1012" value={DF} maxLength={4} />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <NumericField label="Densidad inicial" name="DO" handleInputChange={(v) => setDO(v)} placeholder="ej: 1045" value={DO} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      <NumericField label="Densidad final" name="DF" handleInputChange={(v) => setDF(v)} placeholder="ej: 1012" value={DF} maxLength={4} ariaDescribedby={error ? errorId : undefined} />
+      {error && <p id={errorId} role="alert" style={{ color: 'red' }}>{error}</p>}
       {result && (
         <p>
           Volumen de alcohol: <strong>{result.alcoholCalcValue}</strong>

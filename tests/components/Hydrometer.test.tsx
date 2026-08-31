@@ -23,7 +23,7 @@ describe('Hydrometer', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Lectura densidad\]/i)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Lectura densidad/i)
   })
 
   it('limpiar borra resultado y los tres campos', async () => {

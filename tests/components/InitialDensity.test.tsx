@@ -24,7 +24,7 @@ describe('InitialDensity', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Densidad después de hervir\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Densidad después de hervir/)
   })
 
   it('limpiar borra resultado y los cuatro campos', async () => {

@@ -23,7 +23,7 @@ describe('MashTemperature', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Litros de agua por Kg de grano\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Litros de agua/)
   })
 
   it('limpiar borra resultado y los tres campos', async () => {

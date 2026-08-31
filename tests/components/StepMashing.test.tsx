@@ -24,7 +24,7 @@ describe('StepMashing', () => {
 
     await user.click(screen.getByRole('button', { name: 'Calcular' }))
 
-    expect(screen.getByText(/El valor de \[Peso del grano en Kg\]/)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Peso del grano/)
   })
 
   it('limpiar borra resultado y los cuatro campos', async () => {
