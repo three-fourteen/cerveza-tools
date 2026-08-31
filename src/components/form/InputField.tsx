@@ -1,5 +1,5 @@
 import React from 'react'
-import './InputField.css'
+import styles from './InputField.module.css'
 
 interface InputFieldProps {
   label: string
@@ -30,14 +30,14 @@ function InputField({
   disabled,
   ariaDescribedby,
 }: InputFieldProps) {
-  const labelClass = hideLabel ? 'sr-only ' : ''
+  const labelClass = hideLabel ? `${styles['sr-only']} ` : ''
   return (
-    <div className="form-group">
-      <label className={labelClass + 'form-label'} htmlFor={name}>
+    <div className={styles['form-group']}>
+      <label className={labelClass + styles['form-label']} htmlFor={name}>
         {label}
       </label>
       <input
-        className="input-field"
+        className={styles['input-field']}
         id={name}
         type={type}
         name={name}
