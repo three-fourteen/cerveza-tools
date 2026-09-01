@@ -5,11 +5,22 @@
   "main": "dist/cerveza-tools.umd.js",
   "module": "dist/cerveza-tools.es.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/cerveza-tools.es.js",
+      "require": "./dist/cerveza-tools.umd.js"
+    },
+    "./webmcp": {
+      "types": "./dist/webmcp/index.d.ts",
+      "import": "./dist/webmcp/index.js"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && vite build --config vite.webmcp.config.ts",
     "build:demo": "vite build --config vite.demo.config.ts",
     "clean": "rm -rf dist dist-demo",
     "dev": "vite --config vite.demo.config.ts",

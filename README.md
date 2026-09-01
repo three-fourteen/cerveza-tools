@@ -140,6 +140,38 @@ parámetro:
 alcoholCalc('1050', '1010', 'en')
 ```
 
+## WebMCP
+
+Cerveza Tools can optionally expose selected brewing calculations as structured
+tools for WebMCP-compatible agents. This is an explicit browser-only opt-in:
+normal components and pure calculation functions neither load nor register
+WebMCP tools.
+
+```ts
+import { registerBrewingCalculatorTools } from 'cerveza-tools/webmcp'
+
+const tools = await registerBrewingCalculatorTools({
+  calculators: ['hydrometer', 'alcohol', 'dilution', 'ibu', 'carbonation'],
+  locale: 'en',
+})
+
+if (tools.supported) {
+  // Call tools.unregister() when the host application no longer needs them.
+}
+```
+
+The available tools are `brewing_correct_hydrometer`,
+`brewing_calculate_alcohol`, `brewing_calculate_dilution`,
+`brewing_calculate_ibu`, and `brewing_calculate_carbonation`. Individual tools
+can be selected with `calculators`, or all five can be registered with
+`calculators: 'all'`.
+
+WebMCP support depends on the native `document.modelContext` browser API. When
+it is unavailable, registration returns `{ supported: false }`; calculator UI
+and pure functions continue to work normally. Cerveza Tools Lab is the
+reference host application for composing these context-free calculator tools
+with brewing workflow state.
+
 Los diccionarios (`src/i18n/dictionaries/es.ts` y `en.ts`) son objetos planos
 de traducciones; para agregar un idioma nuevo alcanza con crear un diccionario
 que cumpla el mismo `Dictionary` type y registrarlo en `src/i18n/translate.ts`.
@@ -165,4 +197,4 @@ npm run storybook    # Storybook en http://localhost:8080
 
 ## Licencia
 
-MIT
+GPL-3.0-or-later

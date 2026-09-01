@@ -1,4 +1,4 @@
-import { t, type Locale } from '../i18n'
+import { t, type Locale } from '../i18n/translate'
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
 export function numberWithCommas(x: number | string): string {

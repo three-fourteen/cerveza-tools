@@ -56,6 +56,10 @@ describe('alcoholCalc', () => {
   it('lanza el error en inglés si se pasa locale "en"', () => {
     expect(() => alcoholCalc('', '1010', 'en')).toThrow(/Initial gravity/)
   })
+
+  it('rechaza una densidad final mayor o igual que la inicial', () => {
+    expect(() => alcoholCalc('1010', '1012', 'en')).toThrow(/greater than final gravity/)
+  })
 })
 
 describe('restCalc', () => {
@@ -99,6 +103,10 @@ describe('dilutionCalc', () => {
 
   it('lanza error si la densidad actual está vacía', () => {
     expect(() => dilutionCalc('', '1042', '20')).toThrow(/Densidad actual/)
+  })
+
+  it('rechaza una densidad objetivo que no requiera dilución', () => {
+    expect(() => dilutionCalc('1042', '1052', '20', 'en')).toThrow(/greater than target gravity/)
   })
 })
 
@@ -178,6 +186,10 @@ describe('carbonationCalc', () => {
 
   it('lanza error si el volumen está vacío', () => {
     expect(() => carbonationCalc('', '2.4', '0.8')).toThrow(/Volumen/)
+  })
+
+  it('rechaza un CO2 objetivo menor o igual al residual', () => {
+    expect(() => carbonationCalc('20', '0.8', '0.8', 'en')).toThrow(/greater than residual CO2/)
   })
 })
 

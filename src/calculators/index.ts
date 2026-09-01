@@ -1,5 +1,5 @@
 import { checkVal, parseFloatEx, round } from '../helpers'
-import type { Locale } from '../i18n'
+import type { Locale } from '../i18n/translate'
 
 // Convierte densidad en formato 1040 o 1.040 a puntos de gravedad (ej: 40)
 function densityToPoints(density: number): number {
@@ -8,6 +8,16 @@ function densityToPoints(density: number): number {
     d = parseFloat(d.toFixed(3).replace('.', ''))
   }
   return parseFloat(d.toString()) - 1000
+}
+
+function validationError(locale: Locale, code: string, english: string, spanish: string): never {
+  const error = new Error(locale === 'en' ? english : spanish) as Error & { code?: string }
+  error.code = code
+  throw error
+}
+
+function requirePositive(value: number, locale: Locale, code: string, english: string, spanish: string) {
+  if (!Number.isFinite(value) || value <= 0) validationError(locale, code, english, spanish)
 }
 
 // Correcion densimetro
@@ -20,6 +30,8 @@ export function hydrometerCorrection(hydrometer: string, temp: string, cTemp: st
   if (hydrometerParsed.toString().indexOf('.') === -1) hydrometerParsed = hydrometerParsed / 1000
   const tempParsed = parseFloatEx(temp)
   const cTempParsed = parseFloatEx(cTemp)
+
+  requirePositive(hydrometerParsed, locale, 'INVALID_GRAVITY', 'Hydrometer reading must be greater than zero.', 'La lectura de densidad debe ser mayor que cero.')
 
   const value = round(
     hydrometerParsed + (calculateTempCorrection(cTempParsed) / calculateTempCorrection(tempParsed) - 1),
@@ -39,6 +51,12 @@ export function alcoholCalc(DO: string, DF: string, locale: Locale = 'es') {
 
   const pointsDO = densityToPoints(parseFloatEx(DO))
   const pointsDF = densityToPoints(parseFloatEx(DF))
+
+  requirePositive(pointsDO, locale, 'INVALID_GRAVITY', 'Initial gravity must be greater than 1.000.', 'La densidad inicial debe ser mayor que 1.000.')
+  requirePositive(pointsDF, locale, 'INVALID_GRAVITY', 'Final gravity must be greater than 1.000.', 'La densidad final debe ser mayor que 1.000.')
+  if (pointsDO <= pointsDF) {
+    validationError(locale, 'INVALID_GRAVITY', 'Original gravity must be greater than final gravity.', 'La densidad inicial debe ser mayor que la densidad final.')
+  }
 
   const alcohol = (pointsDO - pointsDF) / 7.45
   const attenuation = ((pointsDO - pointsDF) / pointsDO) * 100
@@ -99,6 +117,13 @@ export function dilutionCalc(DO: string, DF: string, volume: string, locale: Loc
   const pointsDO = densityToPoints(parseFloatEx(DO))
   const pointsDF = densityToPoints(parseFloatEx(DF))
   const vol = parseFloatEx(volume)
+
+  requirePositive(pointsDO, locale, 'INVALID_GRAVITY', 'Current gravity must be greater than 1.000.', 'La densidad actual debe ser mayor que 1.000.')
+  requirePositive(pointsDF, locale, 'INVALID_GRAVITY', 'Target gravity must be greater than 1.000.', 'La densidad objetivo debe ser mayor que 1.000.')
+  requirePositive(vol, locale, 'INVALID_VOLUME', 'Volume must be greater than zero.', 'El volumen debe ser mayor que cero.')
+  if (pointsDO <= pointsDF) {
+    validationError(locale, 'INVALID_GRAVITY', 'Current gravity must be greater than target gravity.', 'La densidad actual debe ser mayor que la densidad objetivo.')
+  }
   const water = (pointsDO * vol) / pointsDF - vol
 
   return { dilutionCalcValue: parseFloat(water.toString()).toFixed(3) }
@@ -176,6 +201,14 @@ export function ibuCalc(
   let gravityParsed = parseFloatEx(gravity)
   if (gravityParsed.toString().indexOf('.') === -1) gravityParsed = gravityParsed / 1000
 
+  requirePositive(w, locale, 'INVALID_HOP_WEIGHT', 'Hop weight must be greater than zero.', 'El peso del lúpulo debe ser mayor que cero.')
+  requirePositive(aa, locale, 'INVALID_ALPHA_ACID', 'Alpha acid percentage must be greater than zero.', 'El porcentaje de ácido alfa debe ser mayor que cero.')
+  if (!Number.isFinite(time) || time < 0) {
+    validationError(locale, 'INVALID_BOIL_TIME', 'Boil time must be zero or greater.', 'El tiempo de hervido debe ser cero o mayor.')
+  }
+  requirePositive(vol, locale, 'INVALID_VOLUME', 'Wort volume must be greater than zero.', 'El volumen del mosto debe ser mayor que cero.')
+  requirePositive(gravityParsed, locale, 'INVALID_GRAVITY', 'Boil gravity must be greater than zero.', 'La densidad durante el hervido debe ser mayor que cero.')
+
   const bignessFactor = 1.65 * Math.pow(0.000125, gravityParsed - 1)
   const boilTimeFactor = (1 - Math.exp(-0.04 * time)) / 4.15
   const utilization = bignessFactor * boilTimeFactor
@@ -211,6 +244,14 @@ export function carbonationCalc(volume: string, targetCO2: string, residualCO2: 
   const vol = parseFloatEx(volume)
   const target = parseFloatEx(targetCO2)
   const residual = parseFloatEx(residualCO2)
+
+  requirePositive(vol, locale, 'INVALID_VOLUME', 'Volume must be greater than zero.', 'El volumen debe ser mayor que cero.')
+  if (!Number.isFinite(target) || target < 0 || !Number.isFinite(residual) || residual < 0) {
+    validationError(locale, 'INVALID_CARBONATION', 'CO2 volumes must be zero or greater.', 'Los volúmenes de CO2 deben ser cero o mayores.')
+  }
+  if (target <= residual) {
+    validationError(locale, 'INVALID_CARBONATION', 'Target CO2 must be greater than residual CO2.', 'El CO2 objetivo debe ser mayor que el CO2 residual.')
+  }
 
   const sugar = 4 * vol * (target - residual)
 
