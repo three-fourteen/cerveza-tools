@@ -1,6 +1,6 @@
 {
   "name": "cerveza-tools",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "cerveza-tools React component",
   "main": "dist/cerveza-tools.umd.js",
   "module": "dist/cerveza-tools.es.js",
@@ -64,7 +64,7 @@
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andres314/cerveza-tools"
+    "url": "https://github.com/three-fourteen/cerveza-tools"
   },
   "bugs": {
     "url": "https://github.com/andres314/cerveza-tools/issues"
