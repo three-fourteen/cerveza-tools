@@ -5,6 +5,7 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [dts({ include: ['src'] })],
   build: {
+    emptyOutDir: false,
     lib: {
       entry: resolve(__dirname, 'src/webmcp/index.ts'),
       formats: ['es'],
