@@ -1,6 +1,6 @@
 {
   "name": "cerveza-tools",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Reusable React calculators and pure functions for craft brewing.",
   "main": "dist/cerveza-tools.umd.js",
   "module": "dist/cerveza-tools.es.js",
@@ -40,7 +40,6 @@
   "devDependencies": {
     "@storybook/addon-actions": "^8.0.0",
     "@storybook/addon-essentials": "^8.0.0",
-
     "@storybook/react": "^8.0.0",
     "@storybook/react-vite": "^8.0.0",
     "@testing-library/jest-dom": "^6.4.0",
