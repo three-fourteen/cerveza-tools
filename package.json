@@ -1,7 +1,7 @@
 {
   "name": "cerveza-tools",
   "version": "2.0.2",
-  "description": "cerveza-tools React component",
+  "description": "Reusable React calculators and pure functions for craft brewing.",
   "main": "dist/cerveza-tools.umd.js",
   "module": "dist/cerveza-tools.es.js",
   "types": "dist/index.d.ts",
